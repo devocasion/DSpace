@@ -38,6 +38,8 @@
         <!-- 'root.basedir' is the path to the root [dspace-src] dir. It must be redefined by each child POM,
              as it is used to reference the LICENSE_HEADER and *.properties file(s) in that directory. -->
         <root.basedir>${basedir}</root.basedir>
+        <!-- Same version of Spring as used by Spring Boot UI -->
+        <spring.version>4.1.6.RELEASE</spring.version>
     </properties>
 
     <build>
@@ -542,7 +544,7 @@
         <!--
            Builds JSPUI WAR for DSpace
         -->
-        <profile>
+        <!--<profile>
             <id>dspace-jspui</id>
             <activation>
                 <file>
@@ -552,7 +554,7 @@
             <modules>
                 <module>dspace-jspui</module>
             </modules>
-        </profile>
+        </profile>-->
 
         <!--
              Builds RDF API and Data Provider WAR for DSpace
@@ -632,7 +634,7 @@
         <!--
            Builds MIRAGE2 WAR for DSpace
         -->
-        <profile>
+        <!--<profile>
            <id>dspace-xmlui-mirage2</id>
            <activation>
                <file>
@@ -642,12 +644,12 @@
            <modules>
                <module>dspace-xmlui-mirage2</module>
            </modules>
-        </profile>
+        </profile>-->
         
         <!--
            Builds XMLUI WAR for DSpace
         -->
-        <profile>
+        <!--<profile>
             <id>dspace-xmlui</id>
             <activation>
                 <file>
@@ -657,14 +659,14 @@
             <modules>
                 <module>dspace-xmlui</module>
             </modules>
-        </profile>
+        </profile>-->
 
         <!--
            Builds LNI WAR & Client for DSpace
         -->
        <!-- Note:- The LNI module is not built by default and is considered deprecated.
             To build it activate the profile with '-Pdspace-lni'. -->
-        <profile>
+        <!--<profile>
             <id>dspace-lni</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -672,6 +674,18 @@
             <modules>
                 <module>dspace-lni</module>
                 <module>dspace-lni/dspace-lni-client</module>
+            </modules>
+        </profile>-->
+        
+        <profile>
+            <id>dspace-ui</id>
+            <activation>
+                <file>
+                    <exists>dspace-ui/pom.xml</exists>
+                </file>
+            </activation>
+            <modules>
+                <module>dspace-ui</module>
             </modules>
         </profile>
 
@@ -869,51 +883,51 @@
          </dependency>
         <!-- Explicitly Specify Latest Version of Spring -->
         <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <groupId>org.springframework</groupId>
-            <version>3.1.1.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
-            <groupId>org.springframework</groupId>
-            <version>3.1.1.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
-            <groupId>org.springframework</groupId>
-            <version>3.1.1.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <groupId>org.springframework</groupId>
-            <version>3.1.1.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-            <groupId>org.springframework</groupId>
-            <version>3.1.1.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <groupId>org.springframework</groupId>
-            <version>3.1.1.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <groupId>org.springframework</groupId>
-            <version>3.1.1.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
-            <artifactId>spring-webmvc</artifactId>
             <groupId>org.springframework</groupId>
-            <version>3.1.1.RELEASE</version>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
          <dependency>
