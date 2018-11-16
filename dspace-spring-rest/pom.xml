@@ -277,12 +277,15 @@
             <artifactId>dspace-services</artifactId>
         </dependency>
 
-        <!-- Apache Commons Collections 4.1 (used for MultiValuedMap to store metadata values for views) -->
-        <!-- NOTE: Currently DSpace API / Services still used 3.2 and may need upgrading at some point -->
+        <dependency>
+            <groupId>org.dspace</groupId>
+            <artifactId>dspace-sword</artifactId>
+        </dependency>
+
+        <!-- Apache Commons Collections (used for MultiValuedMap to store metadata values for views) -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>4.1</version>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
