@@ -238,7 +238,6 @@
                 <dependency>
                     <groupId>org.dspace</groupId>
                     <artifactId>dspace-oai</artifactId>
-                    <classifier>classes</classifier>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
@@ -285,8 +284,6 @@
     	<dependency>
             <groupId>org.dspace</groupId>
             <artifactId>dspace-oai</artifactId>
-            <type>jar</type>
-            <classifier>classes</classifier>
             <exclusions>
                 <exclusion>
                     <groupId>com.lyncode</groupId>
