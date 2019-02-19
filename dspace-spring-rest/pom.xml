@@ -279,6 +279,13 @@
             <groupId>com.nimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>
             <version>${nimbus-jose-jwt.version}</version>
+            <exclusions>
+                <!-- More recent version pulled in via dspace-oai -->
+                <exclusion>
+                    <groupId>org.ow2.asm</groupId>
+                    <artifactId>asm</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- TEST DEPENDENCIES -->
@@ -344,6 +351,18 @@
             <artifactId>dspace-solr</artifactId>
             <classifier>classes</classifier>
             <scope>test</scope>
+            <exclusions>
+                <!-- More recent version pulled in via dspace-oai -->
+                <exclusion>
+                    <groupId>org.ow2.asm</groupId>
+                    <artifactId>asm</artifactId>
+                </exclusion>
+                <!-- More recent version pulled in via dspace-oai -->
+                <exclusion>
+                    <groupId>com.googlecode.concurrentlinkedhashmap</groupId>
+                    <artifactId>concurrentlinkedhashmap-lru</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
