@@ -25,6 +25,7 @@ import org.dspace.eperson.Group;
 import org.dspace.eperson.factory.EPersonServiceFactory;
 import org.dspace.eperson.service.EPersonService;
 import org.dspace.eperson.service.GroupService;
+import org.dspace.services.factory.DSpaceServicesFactory;
 import org.dspace.storage.rdbms.DatabaseUtils;
 import org.jdom.Document;
 import org.junit.After;
@@ -172,6 +173,9 @@ public class AbstractIntegrationTestWithDatabase extends AbstractDSpaceIntegrati
             AbstractBuilder.cleanupObjects();
             parentCommunity = null;
             cleanupContext();
+
+            // Reload our ConfigurationService (to reset configs to defaults again)
+            DSpaceServicesFactory.getInstance().getConfigurationService().reloadConfig();
 
             // NOTE: we explicitly do NOT destroy our default eperson & admin as they
             // are cached and reused for all tests. This speeds up all tests.
