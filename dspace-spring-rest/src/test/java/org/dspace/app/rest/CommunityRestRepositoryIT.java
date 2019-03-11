@@ -35,11 +35,13 @@ import org.dspace.app.rest.model.CommunityRest;
 import org.dspace.app.rest.model.MetadataRest;
 import org.dspace.app.rest.model.MetadataValueRest;
 import org.dspace.app.rest.test.AbstractControllerIntegrationTest;
+import org.dspace.app.rest.test.MetadataPatchSuite;
 import org.dspace.authorize.service.AuthorizeService;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.content.service.CommunityService;
 import org.dspace.core.Constants;
+import org.dspace.eperson.EPerson;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -878,5 +880,25 @@ public class CommunityRestRepositoryIT extends AbstractControllerIntegrationTest
 
         authorizeService.removePoliciesActionFilter(context, eperson, Constants.DELETE);
 
+    }
+
+    @Test
+    public void patchCommunityMetadataAuthorized() throws Exception {
+        runPatchMetadataTests(admin, 200);
+    }
+
+    @Test
+    public void patchCommunityMetadataUnauthorized() throws Exception {
+        runPatchMetadataTests(eperson, 403);
+    }
+
+    private void runPatchMetadataTests(EPerson asUser, int expectedStatus) throws Exception {
+        context.turnOffAuthorisationSystem();
+        parentCommunity = CommunityBuilder.createCommunity(context).withName("Community").build();
+        context.restoreAuthSystemState();
+        String token = getAuthToken(asUser.getEmail(), password);
+
+        new MetadataPatchSuite().runWith(getClient(token), "/api/core/communities/"
+                + parentCommunity.getID(), expectedStatus);
     }
 }

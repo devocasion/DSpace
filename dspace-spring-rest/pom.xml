@@ -200,6 +200,12 @@
             <version>${spring-boot.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.flipkart.zjsonpatch</groupId>
+            <artifactId>zjsonpatch</artifactId>
+            <version>0.4.6</version>
+        </dependency>
+
         <!-- The HAL Browser -->
         <dependency>
             <groupId>org.springframework.data</groupId>
