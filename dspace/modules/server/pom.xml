@@ -1,14 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.dspace.modules</groupId>
-    <artifactId>spring-rest</artifactId>
+    <artifactId>server</artifactId>
     <packaging>war</packaging>
-    <name>DSpace Spring Rest:: Local Customizations</name>
-    <description>Overlay REST customizations.
-This is probably a temporary solution to the build problems. We like to investigate about 
-the possibility to remove the overlays enable a more flexible extension mechanism. 
-The use of web-fragment and spring mvc technology allow us to add request handlers 
-just adding new jar in the classloader</description>
+    <name>DSpace Server Web Application :: Local Customizations</name>
+    <description>This project allows you to overlay your own local web application customizations
+        on top of the default "dspace-server" webapp provided with DSpace.</description>
 
     <parent>
         <artifactId>modules</artifactId>
@@ -101,7 +98,7 @@ just adding new jar in the classloader</description>
         </dependency>
         <dependency>
             <groupId>org.dspace</groupId>
-            <artifactId>dspace-spring-rest</artifactId>
+            <artifactId>dspace-server</artifactId>
             <type>war</type>
         </dependency>
     </dependencies>

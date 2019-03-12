@@ -833,14 +833,14 @@
         </profile>
 
 		<profile>
-            <id>dspace-spring-rest</id>
+            <id>dspace-server</id>
             <activation>
                 <file>
-                    <exists>dspace-spring-rest/pom.xml</exists>
+                    <exists>dspace-server-webapp/pom.xml</exists>
                 </file>
             </activation>
             <modules>
-                <module>dspace-spring-rest</module>
+                <module>dspace-server-webapp</module>
             </modules>
         </profile>
 
@@ -866,7 +866,7 @@
                 <module>dspace-solr</module>
                 <module>dspace-sword</module>
                 <module>dspace-swordv2</module>
-                <module>dspace-spring-rest</module>
+                <module>dspace-server-webapp</module>
             </modules>
             <build>
                 <plugins>
@@ -992,7 +992,7 @@
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
-                <artifactId>dspace-spring-rest</artifactId>
+                <artifactId>dspace-server</artifactId>
                 <version>7.0-SNAPSHOT</version>
                 <type>war</type>
             </dependency>

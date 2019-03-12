@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>dspace-oai</artifactId>
     <packaging>jar</packaging>
-    <name>DSpace OAI-PMH</name>
+    <name>DSpace OAI-PMH Extension</name>
     <description>DSpace OAI-PMH Extension</description>
 
     <parent>

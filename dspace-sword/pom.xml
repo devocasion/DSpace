@@ -4,9 +4,9 @@
     <groupId>org.dspace</groupId>
     <artifactId>dspace-sword</artifactId>
     <packaging>jar</packaging>
-    <name>DSpace SWORD</name>
+    <name>DSpace SWORD v1 Extension</name>
     <description>
-        DSpace SWORD Deposit Service Provider Extension
+        DSpace SWORD v1 Deposit Service Provider Extension
     </description>
 
     <!--

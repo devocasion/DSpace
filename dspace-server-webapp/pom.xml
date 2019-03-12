@@ -2,11 +2,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.dspace</groupId>
-    <artifactId>dspace-spring-rest</artifactId>
+    <artifactId>dspace-server</artifactId>
     <packaging>war</packaging>
-    <name>DSpace Spring Rest (Boot MVC + HATEOAS)</name>
+    <name>DSpace Server Web Application</name>
     <description>
-        DSpace new Rest API
+        DSpace Server Web Application (built on Spring Boot). Includes REST API, OAI-PMH, SWORD (v1/v2), RDF.
     </description>
 
     <!--

@@ -174,12 +174,12 @@ public class RestResourceController implements InitializingBean {
      * Note that the regular expression in the request mapping accept a string as identifier but not the other kind
      * of identifier;
      *
-     * http://<dspace.url>/dspace-spring-rest/api/{apiCategory}/{model}/{id}
+     * http://<dspace.server.url>/api/{apiCategory}/{model}/{id}
      *
      * Example:
      * <pre>
      * {@code
-     *    http://<dspace.url>/dspace-spring-rest/api/config/submissionsections/collection
+     *    http://<dspace.server.url>/api/config/submissionsections/collection
      * }
      * </pre>
      *
@@ -336,19 +336,19 @@ public class RestResourceController implements InitializingBean {
      * Note that the regular expression in the request mapping accept a string as identifier but not the other kind
      * of identifier;
      *
-     * http://<dspace.url>/dspace-spring-rest/api/{apiCategory}/{model}/{id}/{rel}/{relid}
+     * http://<dspace.server.url>/api/{apiCategory}/{model}/{id}/{rel}/{relid}
      *
      * Example:
      * <pre>
      * {@code
-     *      http://<dspace.url>/dspace-spring-rest/api/integration/authorities/SRJournalTitle/entryValues/1479-9995
+     *      http://<dspace.server.url>/api/integration/authorities/SRJournalTitle/entryValues/1479-9995
      * }
      * </pre>
      *
      * Example:
      * <pre>
      * {@code
-     *      http://<dspace.url>/dspace-spring-rest/api/integration/authorities/srsc/entries/VR110111
+     *      http://<dspace.server.url>/api/integration/authorities/srsc/entries/VR110111
      * }
      * </pre>
      *
@@ -378,12 +378,12 @@ public class RestResourceController implements InitializingBean {
     /**
      * Execute a POST request;
      *
-     * curl -X POST http://<dspace.url>/dspace-spring-rest/api/{apiCategory}/{model}
+     * curl -X POST http://<dspace.server.url>/api/{apiCategory}/{model}
      *
      * Example:
      * <pre>
      * {@code
-     *      curl -X POST http://<dspace.url>/dspace-spring-rest/api/submission/workspaceitems
+     *      curl -X POST http://<dspace.server.url>/api/submission/workspaceitems
      * }
      * </pre>
      *

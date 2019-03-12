@@ -4,7 +4,7 @@
     <groupId>org.dspace</groupId>
     <artifactId>dspace-rdf</artifactId>
     <packaging>jar</packaging>
-    <name>DSpace RDF</name>
+    <name>DSpace RDF Extension</name>
     <description>DSpace RDF (Linked Data) Extension</description>
 
     <parent>
