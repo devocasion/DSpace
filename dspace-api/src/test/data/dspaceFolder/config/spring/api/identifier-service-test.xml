@@ -29,10 +29,15 @@
     <bean id="org.dspace.identifier.DOIIdentifierProvider"
           class="org.dspace.identifier.DOIIdentifierProvider"
           scope="singleton">
-        <property name="configurationService"
-                  ref="org.dspace.services.ConfigurationService"/>
-        <!-- NOTE: A DOIConnector is not configured here because it is mocked in the tests themselves -->
-        <!--<property name="DOIConnector"
-                  ref="org.dspace.identifier.doi.DOIConnector"/>-->
+        <!-- NOTE: A DOIConnector is mocked below -->
+        <property name="DOIConnector"
+                  ref="org.dspace.identifier.doi.DOIConnector"/>
+    </bean>
+
+    <!-- Mock a DOIConnector using Mockito -->
+    <bean id="org.dspace.identifier.doi.DOIConnector"
+          class="org.mockito.Mockito" factory-method="mock"
+          scope="singleton">
+        <constructor-arg value="org.dspace.identifier.doi.DOIConnector"/>
     </bean>
 </beans>

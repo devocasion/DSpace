@@ -64,7 +64,6 @@
 
     <bean id="authorContrib" class="org.dspace.importer.external.metadatamapping.contributor.CombinedMetadatumContributor">
         <property name="separator" value=", "/>
-
         <property name="metadatumContributors" ref="combinedauthorList"/>
         <property name="field" ref="dc.contributor.author"/>
     </bean>
@@ -74,44 +73,44 @@
         <ref bean="firstNameContrib"/>
     </util:list>
     <bean id="lastNameContrib" class="org.dspace.importer.external.metadatamapping.contributor.SimpleXpathMetadatumContributor">
-        <property name="field" ref="dc.contributor.author"/>
-        <property name="query" value="descendant::Author/LastName"/>
-        <property name="prefixToNamespaceMapping" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="0" type="java.lang.String" value="descendant::Author/LastName"/>
+        <constructor-arg index="1" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="2" ref="dc.contributor.author"/>
     </bean>
 
     <bean id="firstNameContrib" class="org.dspace.importer.external.metadatamapping.contributor.SimpleXpathMetadatumContributor">
-        <property name="field" ref="dc.contributor.author"/>
-        <property name="query" value="descendant::Author/ForeName"/>
-        <property name="prefixToNamespaceMapping" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="0" type="java.lang.String" value="descendant::Author/ForeName"/>
+        <constructor-arg index="1" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="2" ref="dc.contributor.author"/>
     </bean>
 
     <bean id="keywordContrib" class="org.dspace.importer.external.metadatamapping.contributor.SimpleXpathMetadatumContributor">
-        <property name="field" ref="dc.subject"/>
-        <property name="query" value="descendant::Keyword"/>
-        <property name="prefixToNamespaceMapping" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="0" type="java.lang.String" value="descendant::Keyword"/>
+        <constructor-arg index="1" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="2" ref="dc.subject"/>
     </bean>
     <bean id="yearContrib" class="org.dspace.importer.external.metadatamapping.contributor.SimpleXpathMetadatumContributor">
-        <property name="field" ref="dc.date.issued"/>
-        <property name="query" value="descendant::PubDate/Year"/>
-        <property name="prefixToNamespaceMapping" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="0" type="java.lang.String" value="descendant::PubDate/Year"/>
+        <constructor-arg index="1" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="2" ref="dc.date.issued"/>
     </bean>
 
     <bean id="monthContrib" class="org.dspace.importer.external.metadatamapping.contributor.SimpleXpathMetadatumContributor">
-        <property name="field" ref="dc.date.issued"/>
-        <property name="query" value="descendant::PubDate/Month"/>
-        <property name="prefixToNamespaceMapping" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="0" type="java.lang.String" value="descendant::PubDate/Month"/>
+        <constructor-arg index="1" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="2" ref="dc.date.issued"/>
     </bean>
 
     <bean id="dayContrib" class="org.dspace.importer.external.metadatamapping.contributor.SimpleXpathMetadatumContributor">
-        <property name="field" ref="dc.date.issued"/>
-        <property name="query" value="descendant::PubDate/Day"/>
-        <property name="prefixToNamespaceMapping" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="0" type="java.lang.String" value="descendant::PubDate/Day"/>
+        <constructor-arg index="1" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="2" ref="dc.date.issued"/>
     </bean>
 
     <bean id="languageContrib" class="org.dspace.importer.external.metadatamapping.contributor.SimpleXpathMetadatumContributor">
-        <property name="field" ref="dc.language.iso"/>
-        <property name="query" value="descendant::Language"/>
-        <property name="prefixToNamespaceMapping" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="0" type="java.lang.String"  value="descendant::Language"/>
+        <constructor-arg index="1" ref="prefixToNamespaceMapping"/>
+        <constructor-arg index="2" ref="dc.language.iso"/>
     </bean>
 
     <bean id="dc.title" class="org.dspace.importer.external.metadatamapping.MetadataFieldConfig">
@@ -158,6 +157,6 @@
             these must be present. If multiple are present the result is undefined.
         </description>
     </bean>
-    
+
 
 </beans>

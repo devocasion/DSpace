@@ -113,7 +113,7 @@
     <!--The default configuration settings for discovery-->
     <bean id="defaultConfiguration" class="org.dspace.discovery.configuration.DiscoveryConfiguration" scope="prototype">
         <!--Which sidebar facets are to be displayed-->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
@@ -121,11 +121,9 @@
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterEntityType"/>
             </list>
-        </property>
-        <!-- Set TagCloud configuration per discovery configuration -->
-        <property name="tagCloudFacetConfiguration" ref="defaultTagCloudFacetConfiguration"/>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page-->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterTitle" />
                 <ref bean="searchFilterAuthor" />
@@ -141,9 +139,9 @@
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <!--<property name="defaultSort" ref="sortDateIssued"/>-->
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -156,7 +154,9 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
+        <!-- Set TagCloud configuration per discovery configuration -->
+        <property name="tagCloudFacetConfiguration" ref="defaultTagCloudFacetConfiguration"/>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
@@ -179,69 +179,69 @@
         <property name="defaultRpp" value="10" />
         <property name="hitHighlightingConfiguration">
             <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightingConfiguration">
-                <property name="metadataFields">
+                <constructor-arg>
                     <list>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.contributor.author"/>
+                            <constructor-arg value="dc.contributor.author"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="relationship.type"/>
+                            <constructor-arg value="relationship.type"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="person.identifier.jobtitle"/>
+                            <constructor-arg value="person.identifier.jobtitle"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="project.identifier.name"/>
+                            <constructor-arg value="project.identifier.name"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.abstract"/>
+                            <constructor-arg value="dc.description.abstract"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="2"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.title"/>
+                            <constructor-arg value="dc.title"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <!-- By default, full text snippets are disabled, as snippets of embargoed/restricted bitstreams
                              may appear in search results when the Item is public. See DS-3498
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="project.identifier.status"/>
+                            <constructor-arg value="project.identifier.status"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="orgunit.identifier.name"/>
+                            <constructor-arg value="orgunit.identifier.name"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="orgunit.identifier.description"/>
+                            <constructor-arg value="orgunit.identifier.description"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         -->
                     </list>
-                </property>
+                </constructor-arg>
             </bean>
         </property>
         <property name="moreLikeThisConfiguration">
             <bean class="org.dspace.discovery.configuration.DiscoveryMoreLikeThisConfiguration">
-                <!--When altering this list also alter the "xmlui.Discovery.RelatedItems.help" key as it describes
-                the metadata fields below-->
-                <property name="similarityMetadataFields">
+                <!--Similarity metadata fields. When altering this list also alter the
+                    "xmlui.Discovery.RelatedItems.help" key as it describes the metadata fields below-->
+                <constructor-arg index="0">
                     <list>
                         <value>dc.title</value>
                         <value>dc.contributor.author</value>
                         <value>dc.creator</value>
                         <value>dc.subject</value>
                     </list>
-                </property>
+                </constructor-arg>
                 <!--The minimum number of matching terms across the metadata fields above before an item is found as related -->
-                <property name="minTermFrequency" value="5"/>
+                <constructor-arg index="1" value="5"/>
                 <!--The maximum number of related items displayed-->
-                <property name="max" value="3"/>
+                <constructor-arg index="2" value="3"/>
                 <!--The minimum word length below which words will be ignored-->
                 <property name="minWordLength" value="5"/>
             </bean>
@@ -253,7 +253,7 @@
     <!--The configuration settings for discovery of withdrawn and indiscoverable items (admin only)-->
     <bean id="unDiscoverableItems" class="org.dspace.discovery.configuration.DiscoveryConfiguration" scope="prototype">
         <!--Which sidebar facets are to be displayed-->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
@@ -261,11 +261,9 @@
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterEntityType"/>
             </list>
-        </property>
-        <!-- Set TagCloud configuration per discovery configuration -->
-        <property name="tagCloudFacetConfiguration" ref="defaultTagCloudFacetConfiguration"/>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page-->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterTitle" />
                 <ref bean="searchFilterAuthor" />
@@ -281,9 +279,9 @@
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <!--<property name="defaultSort" ref="sortDateIssued"/>-->
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -296,7 +294,9 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
+        <!-- Set TagCloud configuration per discovery configuration -->
+        <property name="tagCloudFacetConfiguration" ref="defaultTagCloudFacetConfiguration"/>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
@@ -321,69 +321,69 @@
         <property name="defaultRpp" value="10" />
         <property name="hitHighlightingConfiguration">
             <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightingConfiguration">
-                <property name="metadataFields">
+                <constructor-arg>
                     <list>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.contributor.author"/>
+                            <constructor-arg value="dc.contributor.author"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="relationship.type"/>
+                            <constructor-arg value="relationship.type"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="person.identifier.jobtitle"/>
+                            <constructor-arg value="person.identifier.jobtitle"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="project.identifier.name"/>
+                            <constructor-arg value="project.identifier.name"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.abstract"/>
+                            <constructor-arg value="dc.description.abstract"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="2"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.title"/>
+                            <constructor-arg value="dc.title"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <!-- By default, full text snippets are disabled, as snippets of embargoed/restricted bitstreams
                              may appear in search results when the Item is public. See DS-3498
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="project.identifier.status"/>
+                            <constructor-arg value="project.identifier.status"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="orgunit.identifier.name"/>
+                            <constructor-arg value="orgunit.identifier.name"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="orgunit.identifier.description"/>
+                            <constructor-arg value="orgunit.identifier.description"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         -->
                     </list>
-                </property>
+                </constructor-arg>
             </bean>
         </property>
         <property name="moreLikeThisConfiguration">
             <bean class="org.dspace.discovery.configuration.DiscoveryMoreLikeThisConfiguration">
-                <!--When altering this list also alter the "xmlui.Discovery.RelatedItems.help" key as it describes
-                the metadata fields below-->
-                <property name="similarityMetadataFields">
+                <!--Similarity metadata fields. When altering this list also alter the
+                    "xmlui.Discovery.RelatedItems.help" key as it describes the metadata fields below-->
+                <constructor-arg index="0">
                     <list>
                         <value>dc.title</value>
                         <value>dc.contributor.author</value>
                         <value>dc.creator</value>
                         <value>dc.subject</value>
                     </list>
-                </property>
+                </constructor-arg>
                 <!--The minimum number of matching terms across the metadata fields above before an item is found as related -->
-                <property name="minTermFrequency" value="5"/>
+                <constructor-arg index="1" value="5"/>
                 <!--The maximum number of related items displayed-->
-                <property name="max" value="3"/>
+                <constructor-arg index="2" value="3"/>
                 <!--The minimum word length below which words will be ignored-->
                 <property name="minWordLength" value="5"/>
             </bean>
@@ -395,7 +395,7 @@
     <!--The Homepage specific configuration settings for discovery-->
     <bean id="homepageConfiguration" class="org.dspace.discovery.configuration.DiscoveryConfiguration" scope="prototype">
         <!--Which sidebar facets are to be displayed (same as defaultConfiguration above)-->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
@@ -403,11 +403,9 @@
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterEntityType"/>
             </list>
-        </property>
-        <!-- Set TagCloud configuration per discovery configuration -->
-        <property name="tagCloudFacetConfiguration" ref="homepageTagCloudFacetConfiguration"/>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page (same as defaultConfiguration above)-->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterTitle" />
                 <ref bean="searchFilterAuthor" />
@@ -423,9 +421,9 @@
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search (same as defaultConfiguration above)-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <!--<property name="defaultSort" ref="sortDateIssued"/>-->
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -438,7 +436,9 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
+        <!-- Set TagCloud configuration per discovery configuration -->
+        <property name="tagCloudFacetConfiguration" ref="homepageTagCloudFacetConfiguration"/>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration-->
         <property name="defaultFilterQueries">
@@ -458,51 +458,51 @@
         </property>
         <property name="hitHighlightingConfiguration">
             <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightingConfiguration">
-                <property name="metadataFields">
+                <constructor-arg>
                     <list>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.contributor.author"/>
+                            <constructor-arg value="dc.contributor.author"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="relationship.type"/>
+                            <constructor-arg value="relationship.type"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="person.identifier.jobtitle"/>
+                            <constructor-arg value="person.identifier.jobtitle"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="project.identifier.name"/>
+                            <constructor-arg value="project.identifier.name"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.abstract"/>
+                            <constructor-arg value="dc.description.abstract"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="2"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.title"/>
+                            <constructor-arg value="dc.title"/>
                             <property name="snippets" value="5"/>
                         </bean>
                          <!-- By default, full text snippets are disabled, as snippets of embargoed/restricted bitstreams
                              may appear in search results when the Item is public. See DS-3498
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="project.identifier.status"/>
+                            <constructor-arg value="project.identifier.status"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="orgunit.identifier.name"/>
+                            <constructor-arg value="orgunit.identifier.name"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="orgunit.identifier.description"/>
+                            <constructor-arg value="orgunit.identifier.description"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         -->
                     </list>
-                </property>
+                </constructor-arg>
             </bean>
         </property>
         <!-- When true a "did you mean" example will be displayed, value can be true or false -->
@@ -515,23 +515,23 @@
         scope="prototype">
         <property name="id" value="workspace" />
         <!--Which sidebar facets are to be displayed -->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterObjectNamedType" />
                 <ref bean="searchFilterType" />
                 <ref bean="searchFilterIssued" />
             </list>
-        </property>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page -->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterObjectNamedType" />
                 <ref bean="searchFilterType" />
                 <ref bean="searchFilterIssued" />
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <!--<property name="defaultSort" ref="sortDateIssued"/>-->
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -543,7 +543,7 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
@@ -556,28 +556,28 @@
         <property name="defaultRpp" value="10" />
         <property name="hitHighlightingConfiguration">
             <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightingConfiguration">
-                <property name="metadataFields">
+                <constructor-arg>
                     <list>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.title"/>
+                            <constructor-arg value="dc.title"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.contributor.author"/>
+                            <constructor-arg value="dc.contributor.author"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.abstract"/>
+                            <constructor-arg value="dc.description.abstract"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="2"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="fulltext"/>
+                            <constructor-arg value="fulltext"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="2"/>
                         </bean>
                     </list>
-                </property>
+                </constructor-arg>
             </bean>
         </property>
         <!-- When true a "did you mean" example will be displayed, value can be true or false -->
@@ -590,25 +590,25 @@
         scope="prototype">
         <property name="id" value="workflow" />
         <!--Which sidebar facets are to be displayed -->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterObjectNamedType" />
                 <ref bean="searchFilterType" />
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterSubmitter" />
             </list>
-        </property>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page -->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterObjectNamedType" />
                 <ref bean="searchFilterType" />
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterSubmitter" />
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <!--<property name="defaultSort" ref="sortDateIssued"/>-->
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -620,7 +620,7 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
@@ -633,28 +633,28 @@
         <property name="defaultRpp" value="10" />
         <property name="hitHighlightingConfiguration">
             <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightingConfiguration">
-                <property name="metadataFields">
+                <constructor-arg>
                     <list>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.title"/>
+                            <constructor-arg value="dc.title"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.contributor.author"/>
+                            <constructor-arg value="dc.contributor.author"/>
                             <property name="snippets" value="5"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="dc.description.abstract"/>
+                            <constructor-arg value="dc.description.abstract"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="2"/>
                         </bean>
                         <bean class="org.dspace.discovery.configuration.DiscoveryHitHighlightFieldConfiguration">
-                            <property name="field" value="fulltext"/>
+                            <constructor-arg value="fulltext"/>
                             <property name="maxSize" value="250"/>
                             <property name="snippets" value="2"/>
                         </bean>
                     </list>
-                </property>
+                </constructor-arg>
             </bean>
         </property>
         <!-- When true a "did you mean" example will be displayed, value can be true or false -->
@@ -665,7 +665,7 @@
         <property name="id" value="publication"/>
         <property name="indexAlways" value="true"/>
         <!--Which sidebar facets are to be displayed-->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
@@ -673,11 +673,9 @@
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterEntityType"/>
             </list>
-        </property>
-        <!-- Set TagCloud configuration per discovery configuration -->
-        <property name="tagCloudFacetConfiguration" ref="defaultTagCloudFacetConfiguration"/>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page-->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterTitle" />
                 <ref bean="searchFilterAuthor" />
@@ -693,9 +691,9 @@
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <!--<property name="defaultSort" ref="sortDateIssued"/>-->
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -708,7 +706,9 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
+        <!-- Set TagCloud configuration per discovery configuration -->
+        <property name="tagCloudFacetConfiguration" ref="defaultTagCloudFacetConfiguration"/>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
@@ -736,15 +736,15 @@
         <property name="id" value="person"/>
         <property name="indexAlways" value="true"/>
         <!--Which sidebar facets are to be displayed-->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterJobtitle"/>
                 <ref bean="searchFilterKnowsLanguage"/>
                 <ref bean="searchFilterBirthdate"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page-->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterFamilyName"/>
                 <ref bean="searchFilterGivenName"/>
@@ -755,9 +755,9 @@
                 <ref bean="searchFilterIsProjectOfPersonRelation"/>
                 <ref bean="searchFilterIsPublicationOfAuthorRelation"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <!--<property name="defaultSort" ref="sortDateIssued"/>-->
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -771,7 +771,7 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
@@ -799,13 +799,13 @@
         <property name="id" value="project"/>
         <property name="indexAlways" value="true"/>
         <!--Which sidebar facets are to be displayed-->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterSubject"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page-->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterSubject"/>
                 <ref bean="searchFilterIdentifier"/>
@@ -813,9 +813,9 @@
                 <ref bean="searchFilterIsPersonOfProjectRelation"/>
                 <ref bean="searchFilterIsPublicationOfProjectRelation"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <!--<property name="defaultSort" ref="sortDateIssued"/>-->
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -826,7 +826,7 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
@@ -855,15 +855,15 @@
         <property name="id" value="organization"/>
         <property name="indexAlways" value="true"/>
         <!--Which sidebar facets are to be displayed-->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterOrganizationAddressCountry"/>
                 <ref bean="searchFilterOrganizationAddressLocality"/>
                 <ref bean="searchFilterOrganizationFoundingDate"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page-->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterOrganizationLegalName"/>
                 <ref bean="searchFilterOrganizationAddressCountry"/>
@@ -873,9 +873,9 @@
                 <ref bean="searchFilterIsProjectOfOrgUnitRelation"/>
                 <ref bean="searchFilterIsPublicationOfOrgUnitRelation"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <!--<property name="defaultSort" ref="sortDateIssued"/>-->
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -890,7 +890,7 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
@@ -920,14 +920,14 @@
         <property name="id" value="publicationIssue"/>
         <property name="indexAlways" value="true"/>
         <!--Which sidebar facets are to be displayed-->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterCreativeWorkKeywords"/>
                 <ref bean="searchFilterCreativeWorkDatePublished"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page-->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterTitle"/>
                 <ref bean="searchFilterPublicationIssueNumber"/>
@@ -935,9 +935,9 @@
                 <ref bean="searchFilterCreativeWorkDatePublished"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <!--<property name="defaultSort" ref="sortDateIssued"/>-->
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -951,7 +951,7 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
@@ -981,13 +981,13 @@
         <property name="id" value="publicationVolume"/>
         <property name="indexAlways" value="true"/>
         <!--Which sidebar facets are to be displayed-->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterCreativeWorkDatePublished"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page-->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterTitle"/>
                 <ref bean="searchFilterPublicationVolumeNumber"/>
@@ -995,9 +995,9 @@
                 <ref bean="searchFilterIsIssueOfJournalVolumeRelation"/>
                 <ref bean="searchFilterIsJournalVolumeRelation"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <!--<property name="defaultSort" ref="sortDateIssued"/>-->
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -1011,7 +1011,7 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
@@ -1041,14 +1041,14 @@
         <property name="id" value="periodical"/>
         <property name="indexAlways" value="true"/>
         <!--Which sidebar facets are to be displayed-->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterCreativeWorkPublisher"/>
                 <ref bean="searchFilterCreativeWorkEditor"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page-->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterTitle"/>
                 <ref bean="searchFilterCreativeWorkPublisher"/>
@@ -1056,9 +1056,9 @@
                 <ref bean="searchFilterIsIssueOfJournalVolumeRelation"/>
                 <ref bean="searchFilterIsVolumeOfJournalRelation"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <!--<property name="defaultSort" ref="sortDateIssued"/>-->
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -1071,7 +1071,7 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
@@ -1101,15 +1101,15 @@
         <property name="id" value="personOrOrganization"/>
         <property name="indexAlways" value="true"/>
         <!--Which sidebar facets are to be displayed-->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterOrganizationAddressCountry"/>
                 <ref bean="searchFilterJobtitle"/>
                 <ref bean="searchFilterEntityType"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page-->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterEntityType"/>
                 <ref bean="searchFilterOrganizationLegalName"/>
@@ -1126,9 +1126,9 @@
                 <ref bean="searchFilterIsProjectOfPersonRelation"/>
                 <ref bean="searchFilterIsPublicationOfAuthorRelation"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <property name="defaultSort" ref="sortEntityType"/>
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -1148,7 +1148,7 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
@@ -1169,15 +1169,15 @@
         <property name="id" value="fundingAgency"/>
         <property name="indexAlways" value="true"/>
         <!--Which sidebar facets are to be displayed-->
-        <property name="sidebarFacets">
+        <constructor-arg index="0">
             <list>
                 <ref bean="searchFilterOrganizationAddressCountry"/>
                 <ref bean="searchFilterOrganizationAddressLocality"/>
                 <ref bean="searchFilterOrganizationFoundingDate"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The search filters which can be used on the discovery search page-->
-        <property name="searchFilters">
+        <constructor-arg index="1">
             <list>
                 <ref bean="searchFilterOrganizationLegalName"/>
                 <ref bean="searchFilterOrganizationAddressCountry"/>
@@ -1188,9 +1188,9 @@
                 <ref bean="searchFilterIsPublicationOfOrgUnitRelation"/>
                 <ref bean="searchFilterIsProjectOfFundingAgencyRelation"/>
             </list>
-        </property>
+        </constructor-arg>
         <!--The sort filters for the discovery search-->
-        <property name="searchSortConfiguration">
+        <constructor-arg index="2">
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <!--<property name="defaultSort" ref="sortDateIssued"/>-->
                 <!--DefaultSortOrder can either be desc or asc (desc is default)-->
@@ -1205,7 +1205,7 @@
                     </list>
                 </property>
             </bean>
-        </property>
+        </constructor-arg>
         <!--Any default filter queries, these filter queries will be used for all
             queries done by discovery for this configuration -->
         <property name="defaultFilterQueries">
