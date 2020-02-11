@@ -20,11 +20,14 @@ import org.springframework.beans.factory.annotation.Required;
 public class DOIHandleURIGenerator
     extends DOIURIGenerator
     implements URIGenerator {
-    protected static URIGenerator fallback;
 
-    @Required
-    public static void setFallback(URIGenerator fallback) {
-        DOIURIGenerator.fallback = fallback;
+    /**
+     * Initialize DOIHandleURIGenerator with given fallback
+     * @param fallback fallback URIGenerator to use
+     */
+    @Autowired
+    public DOIHandleURIGenerator(URIGenerator fallback) {
+        super(fallback);
     }
 
     @Autowired(required = true)

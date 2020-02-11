@@ -20,13 +20,11 @@ import org.dspace.content.MetadataValue;
 import org.dspace.core.Context;
 import org.dspace.identifier.doi.DOIConnector;
 import org.dspace.identifier.doi.DOIIdentifierException;
-import org.dspace.services.ConfigurationService;
 import org.dspace.versioning.Version;
 import org.dspace.versioning.VersionHistory;
 import org.dspace.versioning.service.VersionHistoryService;
 import org.dspace.versioning.service.VersioningService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Marsa Haoua
@@ -38,8 +36,6 @@ public class VersionedDOIIdentifierProvider extends DOIIdentifierProvider {
      */
     private static Logger log = org.apache.logging.log4j.LogManager.getLogger(VersionedDOIIdentifierProvider.class);
 
-    protected DOIConnector connector;
-
     static final char DOT = '.';
     protected static final String pattern = "\\d+\\" + String.valueOf(DOT) + "\\d+";
 
@@ -47,6 +43,15 @@ public class VersionedDOIIdentifierProvider extends DOIIdentifierProvider {
     protected VersioningService versioningService;
     @Autowired(required = true)
     protected VersionHistoryService versionHistoryService;
+
+    /**
+     * Initialize a Versioned DOI identifier provider with the given DOIConnector
+     * @param connector the DOIConnector to use
+     */
+    @Autowired
+    protected VersionedDOIIdentifierProvider(DOIConnector connector) {
+        super(connector);
+    }
 
     @Override
     public String mint(Context context, DSpaceObject dso)
@@ -310,17 +315,4 @@ public class VersionedDOIIdentifierProvider extends DOIIdentifierProvider {
             }
         }
     }
-
-    @Required
-    public void setDOIConnector(DOIConnector connector) {
-        super.setDOIConnector(connector);
-        this.connector = connector;
-    }
-
-    @Required
-    public void setConfigurationService(ConfigurationService configurationService) {
-        super.setConfigurationService(configurationService);
-        this.configurationService = configurationService;
-    }
-
 }

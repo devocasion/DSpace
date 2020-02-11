@@ -14,7 +14,7 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Kevin Van de Velde (kevin at atmire dot com)
@@ -24,7 +24,7 @@ public class DiscoveryConfiguration implements InitializingBean {
     /**
      * The configuration for the sidebar facets
      **/
-    private List<DiscoverySearchFilterFacet> sidebarFacets = new ArrayList<>();
+    private final List<DiscoverySearchFilterFacet> sidebarFacets;
 
     private TagCloudFacetConfiguration tagCloudFacetConfiguration = new TagCloudFacetConfiguration();
 
@@ -41,9 +41,9 @@ public class DiscoveryConfiguration implements InitializingBean {
     /**
      * The search filters which can be selected on the search page
      **/
-    private List<DiscoverySearchFilter> searchFilters = new ArrayList<>();
+    private final List<DiscoverySearchFilter> searchFilters;
 
-    private DiscoverySortConfiguration searchSortConfiguration;
+    private final DiscoverySortConfiguration searchSortConfiguration;
 
     private int defaultRpp = 10;
 
@@ -52,6 +52,31 @@ public class DiscoveryConfiguration implements InitializingBean {
     private DiscoveryMoreLikeThisConfiguration moreLikeThisConfiguration;
     private boolean spellCheckEnabled;
     private boolean indexAlways = false;
+
+    /**
+     * Initialize a new DiscoveryConfiguration with all required fields
+     * @param sidebarFacets List of sidebar facets
+     * @param searchFilters List of search filters
+     * @param searchSortConfiguration sort configuration
+     */
+    @Autowired
+    public DiscoveryConfiguration(List<DiscoverySearchFilterFacet> sidebarFacets,
+                                  List<DiscoverySearchFilter> searchFilters,
+                                  DiscoverySortConfiguration searchSortConfiguration) {
+        // if null, default to empty list
+        if (sidebarFacets == null) {
+            sidebarFacets = new ArrayList<>();
+        }
+        this.sidebarFacets = sidebarFacets;
+
+        // if null, default to empty list
+        if (searchFilters == null) {
+            searchFilters = new ArrayList<>();
+        }
+        this.searchFilters = searchFilters;
+
+        this.searchSortConfiguration = searchSortConfiguration;
+    }
 
     /**
      * The `indexAlways` property determines whether the configuration should always be included when indexing items.
@@ -78,11 +103,6 @@ public class DiscoveryConfiguration implements InitializingBean {
 
     public List<DiscoverySearchFilterFacet> getSidebarFacets() {
         return sidebarFacets;
-    }
-
-    @Required
-    public void setSidebarFacets(List<DiscoverySearchFilterFacet> sidebarFacets) {
-        this.sidebarFacets = sidebarFacets;
     }
 
     public TagCloudFacetConfiguration getTagCloudFacetConfiguration() {
@@ -128,18 +148,8 @@ public class DiscoveryConfiguration implements InitializingBean {
         return null;
     }
 
-    @Required
-    public void setSearchFilters(List<DiscoverySearchFilter> searchFilters) {
-        this.searchFilters = searchFilters;
-    }
-
     public DiscoverySortConfiguration getSearchSortConfiguration() {
         return searchSortConfiguration;
-    }
-
-    @Required
-    public void setSearchSortConfiguration(DiscoverySortConfiguration searchSortConfiguration) {
-        this.searchSortConfiguration = searchSortConfiguration;
     }
 
     public void setDefaultRpp(int defaultRpp) {

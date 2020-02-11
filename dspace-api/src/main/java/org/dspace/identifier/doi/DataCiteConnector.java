@@ -51,7 +51,6 @@ import org.jdom.output.XMLOutputter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Pascal-Nicolas Becker
@@ -79,36 +78,35 @@ public class DataCiteConnector
      * Stores the scheme used to connect to the DataCite server. It will be set
      * by spring dependency injection.
      */
-    protected String SCHEME;
+    protected final String SCHEME;
     /**
      * Stores the hostname of the DataCite server. Set by spring dependency
      * injection.
      */
-    protected String HOST;
+    protected final String HOST;
 
     /**
      * Path on the DataCite server used to generate DOIs. Set by spring
      * dependency injection.
      */
-    protected String DOI_PATH;
+    protected final String DOI_PATH;
     /**
      * Path on the DataCite server used to register metadata. Set by spring
      * dependency injection.
      */
-    protected String METADATA_PATH;
+    protected final String METADATA_PATH;
     /**
      * Name of crosswalk to convert metadata into DataCite Metadata Scheme. Set
      * by spring dependency injection.
      */
-    protected String CROSSWALK_NAME;
+    protected final String CROSSWALK_NAME;
     /**
      * DisseminationCrosswalk to map local metadata into DataCite metadata.
-     * The name of the crosswalk is set by spring dependency injection using
-     * {@link #setDisseminationCrosswalkName(String) setDisseminationCrosswalkName} which
-     * instantiates the crosswalk.
+     * The name of the crosswalk is set by spring dependency injection, which instantiates the crosswalk.
      */
     protected ParameterizedDisseminationCrosswalk xwalk;
 
+    @Autowired(required = true)
     protected ConfigurationService configurationService;
 
     protected String USERNAME;
@@ -116,87 +114,45 @@ public class DataCiteConnector
     @Autowired
     protected HandleService handleService;
 
-    public DataCiteConnector() {
-        this.xwalk = null;
-        this.USERNAME = null;
-        this.PASSWORD = null;
-    }
-
     /**
-     * Used to set the scheme to connect the DataCite server. Used by spring
-     * dependency injection.
-     *
-     * @param DATACITE_SCHEME Probably https or http.
+     * Initialize a new DataCiteConnector with the given required settings (autowired by spring)
+     * @param DATACITE_SCHEME the scheme to connect the DataCite server (Probably https or http)
+     * @param DATACITE_HOST Hostname to connect to register DOIs (e.g. test.datacite.org).
+     * @param DATACITE_DOI_PATH Path (on Datacite host) to register DOIs, e.g. /doi.
+     * @param DATACITE_METADATA_PATH Path (on Datacite host) to register metadata, e.g. /mds.
+     * @param CROSSWALK_NAME The name of the dissemination crosswalk used to convert the metadata into DataCite
+     *                       Metadata Schema. This crosswalk must be configured in dspace.cfg.
      */
-    @Required
-    public void setDATACITE_SCHEME(String DATACITE_SCHEME) {
+    public DataCiteConnector(String DATACITE_SCHEME, String DATACITE_HOST, String DATACITE_DOI_PATH,
+                             String DATACITE_METADATA_PATH, String CROSSWALK_NAME) {
         this.SCHEME = DATACITE_SCHEME;
-    }
-
-    /**
-     * Set the hostname of the DataCite server. Used by spring dependency
-     * injection.
-     *
-     * @param DATACITE_HOST Hostname to connect to register DOIs (f.e. test.datacite.org).
-     */
-    @Required
-    public void setDATACITE_HOST(String DATACITE_HOST) {
         this.HOST = DATACITE_HOST;
-    }
 
-    /**
-     * Set the path on the DataCite server to register DOIs. Used by spring
-     * dependency injection.
-     *
-     * @param DATACITE_DOI_PATH Path to register DOIs, f.e. /doi.
-     */
-    @Required
-    public void setDATACITE_DOI_PATH(String DATACITE_DOI_PATH) {
         if (!DATACITE_DOI_PATH.startsWith("/")) {
             DATACITE_DOI_PATH = "/" + DATACITE_DOI_PATH;
         }
         if (!DATACITE_DOI_PATH.endsWith("/")) {
             DATACITE_DOI_PATH = DATACITE_DOI_PATH + "/";
         }
-
         this.DOI_PATH = DATACITE_DOI_PATH;
-    }
 
-    /**
-     * Set the path to register metadata on DataCite server. Used by spring
-     * dependency injection.
-     *
-     * @param DATACITE_METADATA_PATH Path to register metadata, f.e. /mds.
-     */
-    @Required
-    public void setDATACITE_METADATA_PATH(String DATACITE_METADATA_PATH) {
         if (!DATACITE_METADATA_PATH.startsWith("/")) {
             DATACITE_METADATA_PATH = "/" + DATACITE_METADATA_PATH;
         }
         if (!DATACITE_METADATA_PATH.endsWith("/")) {
             DATACITE_METADATA_PATH = DATACITE_METADATA_PATH + "/";
         }
-
         this.METADATA_PATH = DATACITE_METADATA_PATH;
+
+        this.CROSSWALK_NAME = CROSSWALK_NAME;
+
+        this.xwalk = null;
+        this.USERNAME = null;
+        this.PASSWORD = null;
     }
 
-
-    @Autowired
-    @Required
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
-    }
-
-    /**
-     * Set the name of the dissemination crosswalk used to convert the metadata
-     * into DataCite Metadata Schema. Used by spring dependency injection.
-     *
-     * @param CROSSWALK_NAME The name of the dissemination crosswalk to use. This
-     *                       crosswalk must be configured in dspace.cfg.
-     */
-    @Required
-    public void setDisseminationCrosswalkName(String CROSSWALK_NAME) {
-        this.CROSSWALK_NAME = CROSSWALK_NAME;
     }
 
     protected void prepareXwalk() {

@@ -17,7 +17,6 @@ import org.dspace.authorize.service.AuthorizeService;
 import org.dspace.core.Context;
 import org.dspace.scripts.handler.DSpaceRunnableHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * This abstract class is the class that should be extended by each script.
@@ -29,11 +28,11 @@ public abstract class DSpaceRunnable implements Runnable {
     /**
      * The name of the script
      */
-    private String name;
+    private final String name;
     /**
      * The description of the script
      */
-    private String description;
+    private final String description;
     /**
      * The CommandLine object for the script that'll hold the information
      */
@@ -51,22 +50,24 @@ public abstract class DSpaceRunnable implements Runnable {
     @Autowired
     private AuthorizeService authorizeService;
 
+    /**
+     * Initialize a DSpaceRunnable with given name & description
+     * @param name name of script
+     * @param description description of script
+     */
+    @Autowired
+    public DSpaceRunnable(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+
     public String getName() {
         return name;
     }
 
-    @Required
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    @Required
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Options getOptions() {

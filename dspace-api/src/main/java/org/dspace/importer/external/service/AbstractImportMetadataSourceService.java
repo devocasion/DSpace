@@ -17,7 +17,6 @@ import org.dspace.importer.external.metadatamapping.transform.GenerateQueryServi
 import org.dspace.importer.external.service.components.AbstractRemoteMetadataSource;
 import org.dspace.importer.external.service.components.MetadataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * This class is a partial implementation of {@link MetadataSource}. It provides assistance with mapping metadata
@@ -31,7 +30,17 @@ import org.springframework.beans.factory.annotation.Required;
 public abstract class AbstractImportMetadataSourceService<RecordType> extends AbstractRemoteMetadataSource
     implements MetadataSource {
     private GenerateQueryService generateQueryForItem = null;
-    private MetadataFieldMapping<RecordType, MetadataContributor<RecordType>> metadataFieldMapping;
+    private final MetadataFieldMapping<RecordType, MetadataContributor<RecordType>> metadataFieldMapping;
+
+    /**
+     * Initialize a generic MetadataSource with the provided metadataFieldMapping
+     * @param metadataFieldMapping MetadataFieldMapping containing the mapping between RecordType and Metadata
+     */
+    @Autowired
+    public AbstractImportMetadataSourceService(
+        MetadataFieldMapping<RecordType, MetadataContributor<RecordType>> metadataFieldMapping) {
+        this.metadataFieldMapping = metadataFieldMapping;
+    }
 
     /**
      * Retrieve the {@link GenerateQueryService}
@@ -61,17 +70,6 @@ public abstract class AbstractImportMetadataSourceService<RecordType> extends Ab
      */
     public MetadataFieldMapping<RecordType, MetadataContributor<RecordType>> getMetadataFieldMapping() {
         return metadataFieldMapping;
-    }
-
-    /**
-     * Sets the MetadataFieldMapping to base the mapping of RecordType and
-     *
-     * @param metadataFieldMapping the map to be used.
-     */
-    @Required
-    public void setMetadataFieldMapping(
-        MetadataFieldMapping<RecordType, MetadataContributor<RecordType>> metadataFieldMapping) {
-        this.metadataFieldMapping = metadataFieldMapping;
     }
 
     /**

@@ -10,7 +10,6 @@ package org.dspace.servicemanager.spring;
 import org.dspace.servicemanager.example.ConcreteExample;
 import org.dspace.servicemanager.example.ServiceExample;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,21 +20,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class SpringAnnotationBean {
 
-    private ServiceExample serviceExample;
+    private final ServiceExample serviceExample;
 
+    /**
+     * Initialize a new SpringAnnotationBean with required settings
+     * @param serviceExample
+     * @param concreteExample
+     */
     @Autowired
-    @Required
-    public void setServiceExample(ServiceExample serviceExample) {
+    public SpringAnnotationBean(ServiceExample serviceExample, ConcreteExample concreteExample) {
         this.serviceExample = serviceExample;
-    }
-
-    private ConcreteExample concreteExample;
-
-    @Autowired
-    @Required
-    public void setConcreteExample(ConcreteExample concreteExample) {
         this.concreteExample = concreteExample;
     }
+
+    private final ConcreteExample concreteExample;
 
     public String getExampleName() {
         return serviceExample.getName();

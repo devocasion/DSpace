@@ -21,6 +21,7 @@ import org.dspace.importer.external.metadatamapping.MetadataFieldConfig;
 import org.dspace.importer.external.metadatamapping.MetadataFieldMapping;
 import org.dspace.importer.external.metadatamapping.MetadatumDTO;
 import org.dspace.importer.external.metadatamapping.contributor.MetadataContributor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
@@ -36,16 +37,11 @@ public class PubmedDateMetadatumContributor<T> implements MetadataContributor<T>
 
     /* A list of all the dateFormats to attempt.  These should be configured to
        have the most specific first and the more lenient at the back. */
-    private List<String> dateFormatsToAttempt;
+    private final List<String> dateFormatsToAttempt;
 
 
     public List<String> getDateFormatsToAttempt() {
         return dateFormatsToAttempt;
-    }
-
-    @Required
-    public void setDateFormatsToAttempt(List<String> dateFormatsToAttempt) {
-        this.dateFormatsToAttempt = dateFormatsToAttempt;
     }
 
     private MetadataFieldConfig field;
@@ -68,8 +64,12 @@ public class PubmedDateMetadatumContributor<T> implements MetadataContributor<T>
 
     /**
      * Initialize an empty PubmedDateMetadatumContributor object
+     * @param dateFormatsToAttempt A list of all the dateFormats to attempt.  These should be configured to
+     *        have the most specific first and the more lenient at the back.
      */
-    public PubmedDateMetadatumContributor() {
+    @Autowired
+    public PubmedDateMetadatumContributor(List<String> dateFormatsToAttempt) {
+        this.dateFormatsToAttempt = dateFormatsToAttempt;
     }
 
     /**
@@ -77,13 +77,17 @@ public class PubmedDateMetadatumContributor<T> implements MetadataContributor<T>
      * @param day   a MetadataContributor, representing a day
      * @param month a {@link MetadataContributor}, representing a month
      * @param year  a {@link MetadataContributor}, representing a year
+     * @param dateFormatsToAttempt A list of all the dateFormats to attempt.  These should be configured to
+     *                             have the most specific first and the more lenient at the back.
      */
+    @Autowired
     public PubmedDateMetadatumContributor(MetadataFieldConfig field, MetadataContributor day, MetadataContributor month,
-                                          MetadataContributor year) {
+                                          MetadataContributor year, List<String> dateFormatsToAttempt) {
         this.field = field;
         this.day = day;
         this.month = month;
         this.year = year;
+        this.dateFormatsToAttempt = dateFormatsToAttempt;
     }
 
     /**

@@ -9,7 +9,7 @@ package org.dspace.discovery.configuration;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Kevin Van de Velde (kevin at atmire dot com)
@@ -18,28 +18,29 @@ public class SidebarFacetConfiguration {
 
     //Let the configuration manager retrieve this !
     private static final int DEFAULT_FACET_LIMIT = 10;
-    private String indexFieldName;
-    private List<String> metadataFields;
+    private final String indexFieldName;
+    private final List<String> metadataFields;
     private int facetLimit = -1;
     private DiscoveryConfigurationParameters.SORT sortOrder = DiscoveryConfigurationParameters.SORT.COUNT;
     private String type = DiscoveryConfigurationParameters.TYPE_TEXT;
+
+    /**
+     * Initialize a new configuration with required fields
+     * @param indexFieldName name of facet in index
+     * @param metadataFields DSpace metadata fields to add to the indexed facet
+     */
+    @Autowired
+    public SidebarFacetConfiguration(String indexFieldName, List<String> metadataFields) {
+        this.indexFieldName = indexFieldName;
+        this.metadataFields = metadataFields;
+    }
 
     public String getIndexFieldName() {
         return indexFieldName;
     }
 
-    @Required
-    public void setIndexFieldName(String indexFieldName) {
-        this.indexFieldName = indexFieldName;
-    }
-
     public List<String> getMetadataFields() {
         return metadataFields;
-    }
-
-    @Required
-    public void setMetadataFields(List<String> metadataFields) {
-        this.metadataFields = metadataFields;
     }
 
     public int getFacetLimit() {

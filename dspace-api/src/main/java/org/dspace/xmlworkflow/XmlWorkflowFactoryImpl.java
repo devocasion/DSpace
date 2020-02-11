@@ -12,7 +12,7 @@ import java.util.Map;
 import org.dspace.content.Collection;
 import org.dspace.xmlworkflow.factory.XmlWorkflowFactory;
 import org.dspace.xmlworkflow.state.Workflow;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * The workflowfactory is responsible for parsing the
@@ -28,7 +28,16 @@ public class XmlWorkflowFactoryImpl implements XmlWorkflowFactory {
 
     public static final String LEGACY_WORKFLOW_NAME = "defaultWorkflow";
 
-    private Map<String, Workflow> workflowMapping;
+    private final Map<String, Workflow> workflowMapping;
+
+    /**
+     * Initialize new workflowfactory with the given workflowMapping. See [dspace]/config/spring/workflow.xml
+     * @param workflowMapping map of one or more Workflows. The key is either a Collection handle or "defaultWorkflow".
+     */
+    @Autowired
+    public XmlWorkflowFactoryImpl(Map<String, Workflow> workflowMapping) {
+        this.workflowMapping = workflowMapping;
+    }
 
     @Override
     public Workflow getWorkflow(Collection collection) throws WorkflowConfigurationException {
@@ -44,10 +53,5 @@ public class XmlWorkflowFactoryImpl implements XmlWorkflowFactory {
 
         throw new WorkflowConfigurationException(
                 "Error while retrieving workflow for the following collection: " + collection.getHandle());
-    }
-
-    @Required
-    public void setWorkflowMapping(Map<String, Workflow> workflowMapping) {
-        this.workflowMapping = workflowMapping;
     }
 }

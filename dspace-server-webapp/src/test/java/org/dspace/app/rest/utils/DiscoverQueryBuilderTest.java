@@ -114,57 +114,49 @@ public class DiscoverQueryBuilderTest {
                 invocation.getArguments()[1] + ":\"" + invocation.getArguments()[3] + "\"",
                 (String) invocation.getArguments()[3]));
 
-        discoveryConfiguration = new DiscoveryConfiguration();
-        discoveryConfiguration.setDefaultFilterQueries(Arrays.asList("archived:true"));
-
-
-        DiscoveryHitHighlightingConfiguration discoveryHitHighlightingConfiguration =
-            new DiscoveryHitHighlightingConfiguration();
-        List<DiscoveryHitHighlightFieldConfiguration> discoveryHitHighlightFieldConfigurations = new LinkedList<>();
-
-        DiscoveryHitHighlightFieldConfiguration discoveryHitHighlightFieldConfiguration =
-            new DiscoveryHitHighlightFieldConfiguration();
-        discoveryHitHighlightFieldConfiguration.setField("dc.title");
-
-        DiscoveryHitHighlightFieldConfiguration discoveryHitHighlightFieldConfiguration1 =
-            new DiscoveryHitHighlightFieldConfiguration();
-        discoveryHitHighlightFieldConfiguration1.setField("fulltext");
-
-        discoveryHitHighlightFieldConfigurations.add(discoveryHitHighlightFieldConfiguration1);
-        discoveryHitHighlightFieldConfigurations.add(discoveryHitHighlightFieldConfiguration);
-
-        discoveryHitHighlightingConfiguration.setMetadataFields(discoveryHitHighlightFieldConfigurations);
-        discoveryConfiguration.setHitHighlightingConfiguration(discoveryHitHighlightingConfiguration);
-
-
         DiscoverySortConfiguration sortConfiguration = new DiscoverySortConfiguration();
 
-        DiscoverySortFieldConfiguration defaultSort = new DiscoverySortFieldConfiguration();
-        defaultSort.setMetadataField("dc.date.accessioned");
+        DiscoverySortFieldConfiguration defaultSort = new DiscoverySortFieldConfiguration("dc.date.accessioned");
         defaultSort.setType(DiscoveryConfigurationParameters.TYPE_DATE);
         sortConfiguration.setDefaultSort(defaultSort);
         sortConfiguration.setDefaultSortOrder(DiscoverySortConfiguration.SORT_ORDER.desc);
 
-        DiscoverySortFieldConfiguration titleSort = new DiscoverySortFieldConfiguration();
-        titleSort.setMetadataField("dc.title");
+        DiscoverySortFieldConfiguration titleSort = new DiscoverySortFieldConfiguration("dc.title");
         sortConfiguration.setSortFields(Arrays.asList(titleSort));
 
-        discoveryConfiguration.setSearchSortConfiguration(sortConfiguration);
-
-        DiscoverySearchFilterFacet subjectFacet = new DiscoverySearchFilterFacet();
-        subjectFacet.setIndexFieldName("subject");
+        DiscoverySearchFilterFacet subjectFacet =
+            new DiscoverySearchFilterFacet("subject", Collections.singletonList("dc.subject"));
         subjectFacet.setFacetLimit(5);
-        DiscoverySearchFilterFacet dateFacet = new DiscoverySearchFilterFacet();
-        dateFacet.setIndexFieldName("dateIssued");
+        DiscoverySearchFilterFacet dateFacet =
+            new DiscoverySearchFilterFacet("dateIssued", Collections.singletonList("dc.date.issued"));
         dateFacet.setType(DiscoveryConfigurationParameters.TYPE_DATE);
         dateFacet.setFacetLimit(6);
-        HierarchicalSidebarFacetConfiguration hierarchyFacet = new HierarchicalSidebarFacetConfiguration();
-        hierarchyFacet.setIndexFieldName("hierarchy");
+        HierarchicalSidebarFacetConfiguration hierarchyFacet =
+            new HierarchicalSidebarFacetConfiguration("hierarchy", Collections.singletonList("dc.subject"),
+                                                      "::");
         hierarchyFacet.setType(TYPE_HIERARCHICAL);
         hierarchyFacet.setFacetLimit(7);
         hierarchyFacet.setSortOrderSidebar(VALUE);
-        discoveryConfiguration.setSidebarFacets(Arrays.asList(subjectFacet, dateFacet, hierarchyFacet));
-        discoveryConfiguration.setSearchFilters(Arrays.asList(subjectFacet, dateFacet, hierarchyFacet));
+        List sidebarFacets = Arrays.asList(subjectFacet, dateFacet, hierarchyFacet);
+        List searchFilters = Arrays.asList(subjectFacet, dateFacet, hierarchyFacet);
+
+        discoveryConfiguration = new DiscoveryConfiguration(sidebarFacets, searchFilters, sortConfiguration);
+        discoveryConfiguration.setDefaultFilterQueries(Arrays.asList("archived:true"));
+
+        List<DiscoveryHitHighlightFieldConfiguration> discoveryHitHighlightFieldConfigurations = new LinkedList<>();
+
+        DiscoveryHitHighlightFieldConfiguration discoveryHitHighlightFieldConfiguration =
+            new DiscoveryHitHighlightFieldConfiguration("dc.title");
+
+        DiscoveryHitHighlightFieldConfiguration discoveryHitHighlightFieldConfiguration1 =
+            new DiscoveryHitHighlightFieldConfiguration("fulltext");
+
+        discoveryHitHighlightFieldConfigurations.add(discoveryHitHighlightFieldConfiguration1);
+        discoveryHitHighlightFieldConfigurations.add(discoveryHitHighlightFieldConfiguration);
+        DiscoveryHitHighlightingConfiguration discoveryHitHighlightingConfiguration =
+            new DiscoveryHitHighlightingConfiguration(discoveryHitHighlightFieldConfigurations);
+
+        discoveryConfiguration.setHitHighlightingConfiguration(discoveryHitHighlightingConfiguration);
 
         query = "my test case";
         searchFilter = new SearchFilter("subject", "equals", "Java");

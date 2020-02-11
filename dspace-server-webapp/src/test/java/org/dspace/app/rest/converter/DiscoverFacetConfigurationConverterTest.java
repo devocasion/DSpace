@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import org.dspace.app.rest.model.FacetConfigurationRest;
 import org.dspace.discovery.configuration.DiscoveryConfiguration;
@@ -40,13 +40,8 @@ public class DiscoverFacetConfigurationConverterTest {
     private String configurationName = "default";
     private String scopeObject = "ba9e1c83-8144-4e9c-9d58-bb97be573b46";
 
-    public void populateDiscoveryConfigurationWithEmptyList() {
-        discoveryConfiguration.setSidebarFacets(new LinkedList<DiscoverySearchFilterFacet>());
-    }
-
     @Test
     public void testReturnType() throws Exception {
-        populateDiscoveryConfigurationWithEmptyList();
         facetConfigurationRest = discoverFacetConfigurationConverter
             .convert(configurationName, scopeObject, discoveryConfiguration);
         assertTrue(facetConfigurationRest.getSidebarFacets().isEmpty());
@@ -63,7 +58,7 @@ public class DiscoverFacetConfigurationConverterTest {
     @Test
     public void testConvertWithConfigurationContainingSidebarFacetsFacetConfigurationRestContainsCorrectSidebarFacet()
         throws Exception {
-        LinkedList<DiscoverySearchFilterFacet> discoverySearchFilterFacets = new LinkedList<>();
+        ArrayList<DiscoverySearchFilterFacet> discoverySearchFilterFacets = new ArrayList<>();
         DiscoverySearchFilterFacet discoverySearchFilterFacet = new DiscoverySearchFilterFacet();
         discoverySearchFilterFacet.setIndexFieldName("Testing");
         discoverySearchFilterFacet.setType("test");
@@ -86,7 +81,7 @@ public class DiscoverFacetConfigurationConverterTest {
     public void testConvertWithConfigurationContainingEmptySidebarFacetListFacetConfigurationRestSidebarFacetsIsEmpty()
         throws Exception {
 
-        when(discoveryConfiguration.getSidebarFacets()).thenReturn(new LinkedList<DiscoverySearchFilterFacet>());
+        when(discoveryConfiguration.getSidebarFacets()).thenReturn(new ArrayList<DiscoverySearchFilterFacet>());
 
         facetConfigurationRest = discoverFacetConfigurationConverter
             .convert(configurationName, scopeObject, discoveryConfiguration);

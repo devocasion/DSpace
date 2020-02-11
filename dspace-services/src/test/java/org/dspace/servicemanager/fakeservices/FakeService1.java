@@ -17,7 +17,6 @@ import org.dspace.kernel.mixins.ServiceChangeListener;
 import org.dspace.kernel.mixins.ShutdownService;
 import org.dspace.services.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 
 /**
@@ -57,7 +56,6 @@ public class FakeService1 implements ConfigChangeListener, ServiceChangeListener
     private ConfigurationService configurationService;
 
     @Autowired
-    @Required
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }

@@ -8,7 +8,7 @@
 package org.dspace.discovery.configuration;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Kevin Van de Velde (kevin at atmire dot com)
@@ -18,13 +18,17 @@ public class DiscoverySortFieldConfiguration {
     private String metadataField;
     private String type = DiscoveryConfigurationParameters.TYPE_TEXT;
 
-    public String getMetadataField() {
-        return metadataField;
+    /**
+     * Initialize a new sort field configuration for the specified field
+     * @param metadataField metadata field to allow sorting on
+     */
+    @Autowired
+    public DiscoverySortFieldConfiguration(String metadataField) {
+        this.metadataField = metadataField;
     }
 
-    @Required
-    public void setMetadataField(String metadataField) {
-        this.metadataField = metadataField;
+    public String getMetadataField() {
+        return metadataField;
     }
 
     public String getType() {

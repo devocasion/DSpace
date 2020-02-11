@@ -22,7 +22,6 @@ import org.dspace.xmlworkflow.storedcomponents.XmlWorkflowItem;
 import org.dspace.xmlworkflow.storedcomponents.service.InProgressUserService;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * A class that contains all the data of an xlworkflow step
@@ -37,13 +36,30 @@ public class Step implements BeanNameAware {
     @Autowired
     protected InProgressUserService inProgressUserService;
 
-    private UserSelectionActionConfig userSelectionMethod;
-    private List<WorkflowActionConfig> actions;
+    private final UserSelectionActionConfig userSelectionMethod;
+    private final List<WorkflowActionConfig> actions;
     private Map<Integer, Step> outcomes = new HashMap<>();
     private String id;
     private Role role;
     private Workflow workflow;
     private int requiredUsers = 1;
+
+    /**
+     * Initialize a new Step with the require settings
+     * @param userSelectionMethod the user selection configuration
+     * @param actions the processing actions for the step. Processing actions contain the logic required to execute
+     *                the required operations in each step.
+     */
+    @Autowired
+    public Step(UserSelectionActionConfig userSelectionMethod, List<WorkflowActionConfig> actions) {
+        userSelectionMethod.setStep(this);
+        this.userSelectionMethod = userSelectionMethod;
+
+        for (WorkflowActionConfig workflowActionConfig : actions) {
+            workflowActionConfig.setStep(this);
+        }
+        this.actions = actions;
+    }
 
     /**
      * Get an WorkflowActionConfiguration object for the provided action identifier
@@ -139,16 +155,6 @@ public class Step implements BeanNameAware {
     }
 
     /**
-     * Set the user selection configuration, this is required as every step requires one
-     * @param userSelectionMethod the user selection method configuration
-     */
-    @Required
-    public void setUserSelectionMethod(UserSelectionActionConfig userSelectionMethod) {
-        this.userSelectionMethod = userSelectionMethod;
-        userSelectionMethod.setStep(this);
-    }
-
-    /**
      * Set the outcomes as a map, if no outcomes are configured this step will be last step in the workflow
      * @param outcomes the map containing the outcomes.
      */
@@ -164,19 +170,6 @@ public class Step implements BeanNameAware {
      */
     public List<WorkflowActionConfig> getActions() {
         return actions;
-    }
-
-    /**
-     * Set the processing actions for the step. Processing actions contain the logic required to execute the required
-     * operations in each step.
-     * @param actions the list of actions
-     */
-    @Required
-    public void setActions(List<WorkflowActionConfig> actions) {
-        for (WorkflowActionConfig workflowActionConfig : actions) {
-            workflowActionConfig.setStep(this);
-        }
-        this.actions = actions;
     }
 
     /**

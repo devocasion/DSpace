@@ -30,8 +30,12 @@ public class DOIURIGenerator implements URIGenerator {
 
     protected static URIGenerator fallback;
 
-    @Required
-    public static void setFallback(URIGenerator fallback) {
+    /**
+     * Initialize DOIURIGenerator with given fallback
+     * @param fallback fallback URIGenerator to use
+     */
+    @Autowired
+    public DOIURIGenerator(URIGenerator fallback) {
         DOIURIGenerator.fallback = fallback;
     }
 

@@ -31,7 +31,7 @@ import org.apache.logging.log4j.Logger;
 import org.dspace.content.Bitstream;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Utils;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Asset store using Amazon's Simple Storage Service (S3).
@@ -52,14 +52,14 @@ public class S3BitStoreService implements BitStoreService {
      */
     private static final String CSA = "MD5";
 
-    private String awsAccessKey;
-    private String awsSecretKey;
+    private final String awsAccessKey;
+    private final String awsSecretKey;
     private String awsRegionName;
 
     /**
      * container for all the assets
      */
-    private String bucketName = null;
+    private String bucketName;
 
     /**
      * (Optional) subfolder within bucket where objects are stored
@@ -71,7 +71,15 @@ public class S3BitStoreService implements BitStoreService {
      */
     private AmazonS3 s3Service = null;
 
-    public S3BitStoreService() {
+    /**
+     * Initialize the Amazon S3 bitstore with the given settings.
+     * @param awsAccessKey AWS access key
+     * @param awsSecretKey corresponding AWS secret key
+     */
+    @Autowired
+    public S3BitStoreService(String awsAccessKey, String awsSecretKey) {
+        this.awsAccessKey = awsAccessKey;
+        this.awsSecretKey = awsSecretKey;
     }
 
     /**
@@ -264,18 +272,8 @@ public class S3BitStoreService implements BitStoreService {
         return awsAccessKey;
     }
 
-    @Required
-    public void setAwsAccessKey(String awsAccessKey) {
-        this.awsAccessKey = awsAccessKey;
-    }
-
     public String getAwsSecretKey() {
         return awsSecretKey;
-    }
-
-    @Required
-    public void setAwsSecretKey(String awsSecretKey) {
-        this.awsSecretKey = awsSecretKey;
     }
 
     public String getAwsRegionName() {
@@ -286,7 +284,6 @@ public class S3BitStoreService implements BitStoreService {
         this.awsRegionName = awsRegionName;
     }
 
-    @Required
     public String getBucketName() {
         return bucketName;
     }
@@ -332,7 +329,7 @@ public class S3BitStoreService implements BitStoreService {
             System.out.println("Missing arguments - exiting");
             return;
         }
-        S3BitStoreService store = new S3BitStoreService();
+        S3BitStoreService store = new S3BitStoreService(accessKey, secretKey);
 
         AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
 

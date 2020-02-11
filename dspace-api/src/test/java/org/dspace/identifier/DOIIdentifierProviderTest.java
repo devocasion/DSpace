@@ -13,7 +13,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.junit.Assume.assumeNotNull;
-import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -37,7 +36,6 @@ import org.dspace.content.service.CollectionService;
 import org.dspace.content.service.CommunityService;
 import org.dspace.content.service.ItemService;
 import org.dspace.content.service.WorkspaceItemService;
-import org.dspace.identifier.doi.DOIConnector;
 import org.dspace.identifier.factory.IdentifierServiceFactory;
 import org.dspace.identifier.service.DOIService;
 import org.dspace.services.ConfigurationService;
@@ -77,7 +75,6 @@ public class DOIIdentifierProviderTest
     private static Community community;
     private static Collection collection;
 
-    private static DOIConnector connector;
     private DOIIdentifierProvider provider;
 
     public DOIIdentifierProviderTest() {
@@ -113,13 +110,10 @@ public class DOIIdentifierProviderTest
             config.setProperty(DOIIdentifierProvider.CFG_NAMESPACE_SEPARATOR,
                                NAMESPACE_SEPARATOR);
 
-            connector = mock(DOIConnector.class);
-
             provider = DSpaceServicesFactory.getInstance().getServiceManager()
                                             .getServiceByName(DOIIdentifierProvider.class.getName(),
                                                               DOIIdentifierProvider.class);
             provider.setConfigurationService(config);
-            provider.setDOIConnector(connector);
         } catch (AuthorizeException ex) {
             log.error("Authorization Error in init", ex);
             fail("Authorization Error in init: " + ex.getMessage());
@@ -142,7 +136,6 @@ public class DOIIdentifierProviderTest
     public void destroy() {
         community = null;
         collection = null;
-        connector = null;
         provider = null;
         super.destroy();
     }

@@ -26,7 +26,6 @@ import org.dspace.xmlworkflow.storedcomponents.WorkflowItemRole;
 import org.dspace.xmlworkflow.storedcomponents.XmlWorkflowItem;
 import org.dspace.xmlworkflow.storedcomponents.service.WorkflowItemRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Processing class for an action where an assigned user can
@@ -44,13 +43,22 @@ public class SelectReviewerAction extends ProcessingAction {
 
     public static final int RESULTS_PER_PAGE = 5;
 
-    private Role role;
+    private final Role role;
 
     @Autowired(required = true)
     protected EPersonService ePersonService;
 
     @Autowired(required = true)
     protected WorkflowItemRoleService workflowItemRoleService;
+
+    /**
+     * Initialize Action with the given workflow Role
+     * @param role Role
+     */
+    @Autowired
+    public SelectReviewerAction(Role role) {
+        this.role = role;
+    }
 
     @Override
     public void activate(Context c, XmlWorkflowItem wf)
@@ -104,10 +112,5 @@ public class SelectReviewerAction extends ProcessingAction {
 
     public Role getRole() {
         return role;
-    }
-
-    @Required
-    public void setRole(Role role) {
-        this.role = role;
     }
 }

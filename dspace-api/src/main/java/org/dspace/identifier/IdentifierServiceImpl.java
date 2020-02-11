@@ -20,7 +20,6 @@ import org.dspace.core.Context;
 import org.dspace.handle.service.HandleService;
 import org.dspace.identifier.service.IdentifierService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * The main service class used to reserve, register and resolve identifiers
@@ -31,7 +30,7 @@ import org.springframework.beans.factory.annotation.Required;
  */
 public class IdentifierServiceImpl implements IdentifierService {
 
-    private List<IdentifierProvider> providers;
+    private final List<IdentifierProvider> providers;
 
     /**
      * log4j category
@@ -43,18 +42,16 @@ public class IdentifierServiceImpl implements IdentifierService {
     @Autowired(required = true)
     protected HandleService handleService;
 
-    protected IdentifierServiceImpl() {
-
-    }
-
+    /**
+     * Initialize a new IdentifierService implementation with the given list of providers
+     * @param providers List of IdentifierProviders to use
+     */
     @Autowired
-    @Required
-    public void setProviders(List<IdentifierProvider> providers) {
-        this.providers = providers;
-
+    protected IdentifierServiceImpl(List<IdentifierProvider> providers) {
         for (IdentifierProvider p : providers) {
             p.setParentService(this);
         }
+        this.providers = providers;
     }
 
     /**

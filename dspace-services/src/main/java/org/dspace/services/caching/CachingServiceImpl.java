@@ -38,7 +38,6 @@ import org.dspace.utils.servicemanager.ProviderHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Implementation of the core caching service, which is available for
@@ -100,10 +99,10 @@ public final class CachingServiceImpl
         }
     }
 
+    @Autowired
     private ConfigurationService configurationService;
 
     @Autowired
-    @Required
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
@@ -118,7 +117,6 @@ public final class CachingServiceImpl
     private ServiceManager serviceManager;
 
     @Autowired
-    @Required
     public void setServiceManager(ServiceManager serviceManager) {
         this.serviceManager = serviceManager;
     }
@@ -129,7 +127,6 @@ public final class CachingServiceImpl
     protected net.sf.ehcache.CacheManager cacheManager;
 
     @Autowired
-    @Required
     public void setCacheManager(net.sf.ehcache.CacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }

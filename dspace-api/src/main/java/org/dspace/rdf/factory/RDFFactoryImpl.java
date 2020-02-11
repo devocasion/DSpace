@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.dspace.rdf.conversion.RDFConverter;
 import org.dspace.rdf.storage.RDFStorage;
 import org.dspace.rdf.storage.URIGenerator;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Pascal-Nicolas Becker (p dot becker at tu hyphen berlin dot de)
@@ -25,26 +25,26 @@ public class RDFFactoryImpl extends RDFFactory {
 
     private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(RDFFactoryImpl.class);
 
-    private RDFStorage storage;
-    private URIGenerator generator;
-    private RDFConverter converter;
+    private final RDFStorage storage;
+    private final URIGenerator generator;
+    private final RDFConverter converter;
 
-    @Required
-    public void setStorage(RDFStorage storage) {
+    /**
+     * Initialize a new RDFFactory implementation with given required settings
+     * @param storage RDFStorage to use
+     * @param generator URIGenerator to use
+     * @param converter RDFConverter to use
+     */
+    @Autowired
+    public RDFFactoryImpl(RDFStorage storage, URIGenerator generator, RDFConverter converter) {
         this.storage = storage;
-    }
 
-    @Required
-    public void setGenerator(URIGenerator generator) {
         if (log.isDebugEnabled()) {
             log.debug("Using '" + generator.getClass().getCanonicalName()
                           + "' as URIGenerator.");
         }
         this.generator = generator;
-    }
 
-    @Required
-    public void setConverter(RDFConverter converter) {
         this.converter = converter;
     }
 

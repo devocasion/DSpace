@@ -34,7 +34,7 @@ import org.json.JSONObject;
 import org.orcid.jaxb.model.common_v2.OrcidId;
 import org.orcid.jaxb.model.record_v2.Person;
 import org.orcid.jaxb.model.search_v2.Result;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * This class is the implementation of the ExternalDataProvider interface that will deal with the OrcidV2 External
@@ -44,7 +44,7 @@ public class OrcidV2AuthorDataProvider implements ExternalDataProvider {
 
     private static Logger log = LogManager.getLogger(OrcidV2AuthorDataProvider.class);
 
-    private OrcidRestConnector orcidRestConnector;
+    private final OrcidRestConnector orcidRestConnector;
     private String OAUTHUrl;
     private String clientId;
 
@@ -52,8 +52,8 @@ public class OrcidV2AuthorDataProvider implements ExternalDataProvider {
 
     private String accessToken;
 
-    private String sourceIdentifier;
-    private String orcidUrl;
+    private final String sourceIdentifier;
+    private final String orcidUrl;
 
     public static final String ORCID_ID_SYNTAX = "\\d{4}-\\d{4}-\\d{4}-(\\d{3}X|\\d{4})";
 
@@ -103,9 +103,15 @@ public class OrcidV2AuthorDataProvider implements ExternalDataProvider {
     /**
      * Makes an instance of the Orcidv2 class based on the provided parameters.
      * This constructor is called through the spring bean initialization
+     * @param url the URL of the ORCID API (i.e. REST endpoint)
+     * @param sourceIdentifier The sourceIdentifier to be set on this OrcidV2AuthorDataProvider
+     * @param orcidUrl the public ORCID website URL
      */
-    private OrcidV2AuthorDataProvider(String url) {
+    @Autowired
+    public OrcidV2AuthorDataProvider(String url, String sourceIdentifier, String orcidUrl) {
         this.orcidRestConnector = new OrcidRestConnector(url);
+        this.sourceIdentifier = sourceIdentifier;
+        this.orcidUrl = orcidUrl;
     }
 
     @Override
@@ -227,31 +233,12 @@ public class OrcidV2AuthorDataProvider implements ExternalDataProvider {
         return converter.getNumberOfResultsFromXml(bioDocument);
     }
 
-
-    /**
-     * Generic setter for the sourceIdentifier
-     * @param sourceIdentifier   The sourceIdentifier to be set on this OrcidV2AuthorDataProvider
-     */
-    @Required
-    public void setSourceIdentifier(String sourceIdentifier) {
-        this.sourceIdentifier = sourceIdentifier;
-    }
-
     /**
      * Generic getter for the orcidUrl
      * @return the orcidUrl value of this OrcidV2AuthorDataProvider
      */
     public String getOrcidUrl() {
         return orcidUrl;
-    }
-
-    /**
-     * Generic setter for the orcidUrl
-     * @param orcidUrl   The orcidUrl to be set on this OrcidV2AuthorDataProvider
-     */
-    @Required
-    public void setOrcidUrl(String orcidUrl) {
-        this.orcidUrl = orcidUrl;
     }
 
     /**

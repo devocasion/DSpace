@@ -7,6 +7,8 @@
  */
 package org.dspace.discovery.configuration;
 
+import java.util.List;
+
 /**
  * An expanded class that allows a search filter to be used as a sidebar facet
  *
@@ -22,6 +24,16 @@ public class DiscoverySearchFilterFacet extends DiscoverySearchFilter {
     private DiscoveryConfigurationParameters.SORT sortOrderFilterPage = DiscoveryConfigurationParameters.SORT.COUNT;
     public static final String FILTER_TYPE_FACET = "facet";
     private boolean exposeMinMax = false;
+
+    /**
+     * Initialize filter with required fields.
+     *
+     * @param indexFieldName name of the search filter in the Discovery index
+     * @param metadataFields DSpace metadata fields to add to search filter
+     */
+    public DiscoverySearchFilterFacet(String indexFieldName, List<String> metadataFields) {
+        super(indexFieldName, metadataFields);
+    }
 
     public int getFacetLimit() {
         if (facetLimit == -1) {

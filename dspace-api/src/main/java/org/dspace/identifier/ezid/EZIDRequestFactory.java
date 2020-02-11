@@ -10,7 +10,7 @@ package org.dspace.identifier.ezid;
 
 import java.net.URISyntaxException;
 
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Create configured EZID requests.
@@ -29,9 +29,22 @@ import org.springframework.beans.factory.annotation.Required;
  * @author mwood
  */
 public class EZIDRequestFactory {
-    private String EZID_SCHEME;
-    private String EZID_HOST;
-    private String EZID_PATH;
+    private final String EZID_SCHEME;
+    private final String EZID_HOST;
+    private final String EZID_PATH;
+
+    /**
+     * Initialize a new EZID requestfactory with the given required settings
+     * @param aEZID_SCHEME EZID URL scheme to set.
+     * @param aEZID_HOST the EZID host to set.
+     * @param aEZID_PATH the local path to the EZID API.
+     */
+    @Autowired
+    public EZIDRequestFactory(String aEZID_SCHEME, String aEZID_HOST, String aEZID_PATH) {
+        this.EZID_SCHEME = aEZID_SCHEME;
+        this.EZID_HOST = aEZID_HOST;
+        this.EZID_PATH = aEZID_PATH;
+    }
 
     /**
      * Configure an EZID request.
@@ -46,30 +59,6 @@ public class EZIDRequestFactory {
         throws URISyntaxException {
         return new EZIDRequest(EZID_SCHEME, EZID_HOST, EZID_PATH,
                                authority, username, password);
-    }
-
-    /**
-     * @param aEZID_SCHEME the EZID URL scheme to set.
-     */
-    @Required
-    public void setEZID_SCHEME(String aEZID_SCHEME) {
-        EZID_SCHEME = aEZID_SCHEME;
-    }
-
-    /**
-     * @param aEZID_HOST the EZID host to set.
-     */
-    @Required
-    public void setEZID_HOST(String aEZID_HOST) {
-        EZID_HOST = aEZID_HOST;
-    }
-
-    /**
-     * @param aEZID_PATH the local path to the EZID API.
-     */
-    @Required
-    public void setEZID_PATH(String aEZID_PATH) {
-        EZID_PATH = aEZID_PATH;
     }
 
     public String getEzidScheme() {

@@ -18,7 +18,7 @@ import org.dspace.xmlworkflow.WorkflowConfigurationException;
 import org.dspace.xmlworkflow.state.actions.ActionResult;
 import org.dspace.xmlworkflow.storedcomponents.XmlWorkflowItem;
 import org.springframework.beans.factory.BeanNameAware;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Class that contains all the steps and roles involved in a certain
@@ -32,8 +32,25 @@ import org.springframework.beans.factory.annotation.Required;
 public class Workflow implements BeanNameAware {
 
     private String id;
-    private Step firstStep;
-    private List<Step> steps;
+    private final Step firstStep;
+    private final List<Step> steps;
+
+    /**
+     * Initialize a new workflow with all required fields. A workflow needs to know its first step, and have a list
+     * of all steps that need to be executed before the item is archived.
+     * @param firstStep first of workflow steps
+     * @param steps the workflow steps (including first step)
+     */
+    @Autowired
+    public Workflow(Step firstStep, List<Step> steps) {
+        firstStep.setWorkflow(this);
+        this.firstStep = firstStep;
+
+        for (Step step : steps) {
+            step.setWorkflow(this);
+        }
+        this.steps = steps;
+    }
 
     public Step getFirstStep() {
         return firstStep;
@@ -70,30 +87,12 @@ public class Workflow implements BeanNameAware {
         }
     }
 
-    @Required
-    public void setFirstStep(Step firstStep) {
-        firstStep.setWorkflow(this);
-        this.firstStep = firstStep;
-    }
-
     /**
      * Get the steps that need to be executed in this workflow before the item is archived
      * @return the workflow steps
      */
     public List<Step> getSteps() {
         return steps;
-    }
-
-    /**
-     * Set the steps that need to be executed in this workflow before the item is archived
-     * @param steps the workflow steps
-     */
-    @Required
-    public void setSteps(List<Step> steps) {
-        for (Step step : steps) {
-            step.setWorkflow(this);
-        }
-        this.steps = steps;
     }
 
     /**

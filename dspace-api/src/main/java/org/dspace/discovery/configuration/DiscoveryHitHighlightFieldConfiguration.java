@@ -7,7 +7,7 @@
  */
 package org.dspace.discovery.configuration;
 
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Configuration class that holds hit highlighting configuration for a single metadata field
@@ -17,18 +17,22 @@ import org.springframework.beans.factory.annotation.Required;
  * @author Mark Diggory (markd at atmire dot com)
  */
 public class DiscoveryHitHighlightFieldConfiguration {
-    private String field;
+    private final String field;
     private int maxSize = 0;
     private int snippets = 3;
 
 
-    public String getField() {
-        return field;
+    /**
+     * Initialize configuration for a specific metadata field
+     * @param field metadata field for which this configuration is used
+     */
+    @Autowired
+    public DiscoveryHitHighlightFieldConfiguration(String field) {
+        this.field = field;
     }
 
-    @Required
-    public void setField(String field) {
-        this.field = field;
+    public String getField() {
+        return field;
     }
 
     public int getMaxSize() {

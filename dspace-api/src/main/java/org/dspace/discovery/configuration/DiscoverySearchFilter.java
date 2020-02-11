@@ -9,37 +9,38 @@ package org.dspace.discovery.configuration;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Kevin Van de Velde (kevin at atmire dot com)
  */
 public class DiscoverySearchFilter {
 
-    protected String indexFieldName;
-    protected List<String> metadataFields;
+    protected final String indexFieldName;
+    protected final List<String> metadataFields;
     protected String type = DiscoveryConfigurationParameters.TYPE_TEXT;
     public static final String FILTER_TYPE_DEFAULT = "default";
     protected boolean isOpenByDefault = false;
 
     protected int pageSize;
 
+    /**
+     * Initialize filter with required fields.
+     * @param indexFieldName name of the search filter in the Discovery index
+     * @param metadataFields DSpace metadata fields to add to search filter
+     */
+    @Autowired
+    public DiscoverySearchFilter(String indexFieldName, List<String> metadataFields) {
+        this.indexFieldName = indexFieldName;
+        this.metadataFields = metadataFields;
+    }
+
     public String getIndexFieldName() {
         return indexFieldName;
     }
 
-    @Required
-    public void setIndexFieldName(String indexFieldName) {
-        this.indexFieldName = indexFieldName;
-    }
-
     public List<String> getMetadataFields() {
         return metadataFields;
-    }
-
-    @Required
-    public void setMetadataFields(List<String> metadataFields) {
-        this.metadataFields = metadataFields;
     }
 
     /**

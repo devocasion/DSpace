@@ -9,7 +9,7 @@ package org.dspace.discovery.configuration;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Class that contains the more like this configuration on item pages
@@ -19,32 +19,32 @@ import org.springframework.beans.factory.annotation.Required;
  * @author Mark Diggory (markd at atmire dot com)
  */
 public class DiscoveryMoreLikeThisConfiguration {
-    private List<String> similarityMetadataFields;
-    private int minTermFrequency;
-    private int max;
+    private final List<String> similarityMetadataFields;
+    private final int minTermFrequency;
+    private final int max;
     private int minWordLength;
 
-    @Required
-    public void setSimilarityMetadataFields(List<String> similarityMetadataFields) {
+    /**
+     * Initialize a configuration with require fields.
+     * @param similarityMetadataFields metadata fields to check for similarity
+     * @param minTermFrequency The minimum number of matching terms across the metadata fields above
+     *                         before an item is found as related
+     * @param max The maximum number of related items displayed
+     */
+    @Autowired
+    public DiscoveryMoreLikeThisConfiguration(List<String> similarityMetadataFields, int minTermFrequency,
+                                              int max) {
         this.similarityMetadataFields = similarityMetadataFields;
+        this.minTermFrequency = minTermFrequency;
+        this.max = max;
     }
 
     public List<String> getSimilarityMetadataFields() {
         return similarityMetadataFields;
     }
 
-    @Required
-    public void setMinTermFrequency(int minTermFrequency) {
-        this.minTermFrequency = minTermFrequency;
-    }
-
     public int getMinTermFrequency() {
         return minTermFrequency;
-    }
-
-    @Required
-    public void setMax(int max) {
-        this.max = max;
     }
 
     public int getMax() {
@@ -55,6 +55,10 @@ public class DiscoveryMoreLikeThisConfiguration {
         return minWordLength;
     }
 
+    /**
+     * Set the minimum word length below which words will be ignored
+     * @param minWordLength
+     */
     public void setMinWordLength(int minWordLength) {
         this.minWordLength = minWordLength;
     }

@@ -12,7 +12,6 @@ import org.dspace.kernel.mixins.ShutdownService;
 import org.dspace.servicemanager.example.ConcreteExample;
 import org.dspace.servicemanager.example.ServiceExample;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,7 +35,6 @@ public class SampleAnnotationBean implements InitializedService, ShutdownService
     private ServiceExample serviceExample;
 
     @Autowired
-    @Required
     public void setServiceExample(ServiceExample serviceExample) {
         this.serviceExample = serviceExample;
     }
@@ -44,7 +42,6 @@ public class SampleAnnotationBean implements InitializedService, ShutdownService
     private ConcreteExample concreteExample;
 
     @Autowired
-    @Required
     public void setConcreteExample(ConcreteExample concreteExample) {
         this.concreteExample = concreteExample;
     }

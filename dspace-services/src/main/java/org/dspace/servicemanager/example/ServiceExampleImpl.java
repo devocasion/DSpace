@@ -8,7 +8,6 @@
 package org.dspace.servicemanager.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,7 +23,6 @@ public final class ServiceExampleImpl implements ServiceExample {
     private ConcreteExample concreteExample;
 
     @Autowired // Spring
-    @Required // Spring
     public void setConcreteExample(ConcreteExample concreteExample) {
         this.concreteExample = concreteExample;
     }

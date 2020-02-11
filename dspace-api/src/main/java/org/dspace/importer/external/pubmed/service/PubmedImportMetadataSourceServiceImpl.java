@@ -28,8 +28,10 @@ import org.dspace.content.Item;
 import org.dspace.importer.external.datamodel.ImportRecord;
 import org.dspace.importer.external.datamodel.Query;
 import org.dspace.importer.external.exception.MetadataSourceException;
+import org.dspace.importer.external.pubmed.metadatamapping.PubmedFieldMapping;
 import org.dspace.importer.external.service.AbstractImportMetadataSourceService;
 import org.jaxen.JaxenException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Implements a data source for querying PubMed Central
@@ -40,6 +42,15 @@ public class PubmedImportMetadataSourceServiceImpl extends AbstractImportMetadat
     private String baseAddress;
 
     private WebTarget pubmedWebTarget;
+
+    /**
+     * Initialize a PubmedImportMetadataSourceServiceImpl  with the provided metadataFieldMapping
+     * @param metadataFieldMapping MetadataFieldMapping containing the mapping between OMElement and Metadata
+     */
+    @Autowired
+    public PubmedImportMetadataSourceServiceImpl(PubmedFieldMapping metadataFieldMapping) {
+        super(metadataFieldMapping);
+    }
 
     /**
      * Find the number of records matching a query;

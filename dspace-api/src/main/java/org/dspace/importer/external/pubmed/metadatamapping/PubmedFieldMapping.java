@@ -11,6 +11,7 @@ package org.dspace.importer.external.pubmed.metadatamapping;
 import java.util.Map;
 import javax.annotation.Resource;
 
+import org.apache.axiom.om.OMElement;
 import org.dspace.importer.external.metadatamapping.AbstractMetadataFieldMapping;
 
 /**
@@ -19,7 +20,7 @@ import org.dspace.importer.external.metadatamapping.AbstractMetadataFieldMapping
  *
  * @author jonas - (jonas at atmire dot com)
  */
-public class PubmedFieldMapping extends AbstractMetadataFieldMapping {
+public class PubmedFieldMapping extends AbstractMetadataFieldMapping<OMElement> {
 
     /**
      * Defines which metadatum is mapped on which metadatum. Note that while the key must be unique it

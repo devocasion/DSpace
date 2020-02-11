@@ -62,8 +62,7 @@ public class DiscoverySortConfiguration {
         }
 
         if (StringUtils.equalsIgnoreCase(SCORE, sortField)) {
-            DiscoverySortFieldConfiguration configuration = new DiscoverySortFieldConfiguration();
-            configuration.setMetadataField(SCORE);
+            DiscoverySortFieldConfiguration configuration = new DiscoverySortFieldConfiguration(SCORE);
             return configuration;
         }
 

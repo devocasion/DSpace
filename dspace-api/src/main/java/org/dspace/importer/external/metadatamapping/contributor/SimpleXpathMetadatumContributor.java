@@ -21,7 +21,7 @@ import org.dspace.importer.external.metadatamapping.MetadataFieldConfig;
 import org.dspace.importer.external.metadatamapping.MetadataFieldMapping;
 import org.dspace.importer.external.metadatamapping.MetadatumDTO;
 import org.jaxen.JaxenException;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Metadata contributor that takes an axiom OMElement and turns it into a metadatum
@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Required;
  * @author Roeland Dillen (roeland at atmire dot com)
  */
 public class SimpleXpathMetadatumContributor implements MetadataContributor<OMElement> {
-    private MetadataFieldConfig field;
+    private final MetadataFieldConfig field;
 
     /**
      * Return prefixToNamespaceMapping
@@ -81,6 +81,7 @@ public class SimpleXpathMetadatumContributor implements MetadataContributor<OMEl
      * @param field
      * <a href="https://github.com/DSpace/DSpace/tree/master/dspace-api/src/main/java/org/dspace/importer/external#metadata-mapping-">MetadataFieldConfig</a>
      */
+    @Autowired
     public SimpleXpathMetadatumContributor(String query, Map<String, String> prefixToNamespaceMapping,
                                            MetadataFieldConfig field) {
         this.query = query;
@@ -89,13 +90,16 @@ public class SimpleXpathMetadatumContributor implements MetadataContributor<OMEl
     }
 
     /**
-     * Empty constructor for SimpleXpathMetadatumContributor
+     * Initialize a SimpleXpathMetadatumContributor with required settings
+     * @param field MetadataFieldConfig used while retrieving MetadatumDTO
+     * @param query query used to create an xpathExpression on
      */
-    public SimpleXpathMetadatumContributor() {
-
+    public SimpleXpathMetadatumContributor(MetadataFieldConfig field, String query) {
+        this.field = field;
+        this.query = query;
     }
 
-    private String query;
+    private final String query;
 
     /**
      * Return the MetadataFieldConfig used while retrieving MetadatumDTO
@@ -107,27 +111,12 @@ public class SimpleXpathMetadatumContributor implements MetadataContributor<OMEl
     }
 
     /**
-     * Setting the MetadataFieldConfig
-     *
-     * @param field MetadataFieldConfig used while retrieving MetadatumDTO
-     */
-    @Required
-    public void setField(MetadataFieldConfig field) {
-        this.field = field;
-    }
-
-    /**
      * Return query used to create an xpathExpression on, this query is used to
      *
      * @return the query this instance is based on
      */
     public String getQuery() {
         return query;
-    }
-
-    @Required
-    public void setQuery(String query) {
-        this.query = query;
     }
 
     /**

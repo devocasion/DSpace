@@ -35,7 +35,6 @@ import org.dspace.identifier.ezid.Transform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Provide service for DOIs through DataCite using the EZID service.
@@ -111,7 +110,7 @@ public class EZIDIdentifierProvider
     /**
      * Map DataCite metadata into local metadata.
      */
-    private Map<String, String> crosswalk = new HashMap<>();
+    private final Map<String, String> crosswalk;
 
     /**
      * Converters to be applied to specific fields.
@@ -121,13 +120,28 @@ public class EZIDIdentifierProvider
     /**
      * Factory for EZID requests.
      */
-    private EZIDRequestFactory requestFactory;
+    private final EZIDRequestFactory requestFactory;
 
     @Autowired(required = true)
     protected ContentServiceFactory contentServiceFactory;
 
     @Autowired(required = true)
     protected ItemService itemService;
+
+    /**
+     * Initialize a new EZID identifier provider with the given EZID request factory & crosswalk
+     * @param aRequestFactory the EZIDRequestFactory to use.
+     * @param aCrosswalk map of DSO metadata fields to EZID keys. This will drive the generation of EZID metadata
+     *                   for the minting of new identifiers.
+     */
+    protected EZIDIdentifierProvider(EZIDRequestFactory aRequestFactory, Map<String, String> aCrosswalk) {
+        this.requestFactory = aRequestFactory;
+
+        if (aCrosswalk == null) {
+            aCrosswalk = new HashMap<>();
+        }
+        this.crosswalk = aCrosswalk;
+    }
 
     @Override
     public boolean supports(Class<? extends Identifier> identifier) {
@@ -592,17 +606,6 @@ public class EZIDIdentifierProvider
         return mapped;
     }
 
-    /**
-     * Provide a map from DSO metadata keys to EZID keys.  This will drive the
-     * generation of EZID metadata for the minting of new identifiers.
-     *
-     * @param aCrosswalk map of metadata fields to EZID keys
-     */
-    @Required
-    public void setCrosswalk(Map<String, String> aCrosswalk) {
-        crosswalk = aCrosswalk;
-    }
-
     public Map<String, String> getCrosswalk() {
         return crosswalk;
     }
@@ -623,11 +626,6 @@ public class EZIDIdentifierProvider
 
     public void setDisseminationCrosswalkName(String DATACITE_XML_CROSSWALK) {
         this.DATACITE_XML_CROSSWALK = DATACITE_XML_CROSSWALK;
-    }
-
-    @Required
-    public void setRequestFactory(EZIDRequestFactory aRequestFactory) {
-        requestFactory = aRequestFactory;
     }
 
     public EZIDRequestFactory getRequestFactory() {

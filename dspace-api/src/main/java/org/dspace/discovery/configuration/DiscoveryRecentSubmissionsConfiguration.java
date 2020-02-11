@@ -7,35 +7,36 @@
  */
 package org.dspace.discovery.configuration;
 
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Kevin Van de Velde (kevin at atmire dot com)
  */
 public class DiscoveryRecentSubmissionsConfiguration {
 
-    private String metadataSortField;
+    private final String metadataSortField;
     private String type;
 
-    private int max = 5;
+    private final int max;
     private boolean useAsHomePage;
+
+    /**
+     * Initialize configuration with required fields
+     * @param metadataSortField metadata field to sort on
+     * @param max maximum number of results to display/return
+     */
+    @Autowired
+    public DiscoveryRecentSubmissionsConfiguration(String metadataSortField, int max) {
+        this.metadataSortField = metadataSortField;
+        this.max = max;
+    }
 
     public String getMetadataSortField() {
         return metadataSortField;
     }
 
-    @Required
-    public void setMetadataSortField(String metadataSortField) {
-        this.metadataSortField = metadataSortField;
-    }
-
     public int getMax() {
         return max;
-    }
-
-    @Required
-    public void setMax(int max) {
-        this.max = max;
     }
 
     public String getType() {

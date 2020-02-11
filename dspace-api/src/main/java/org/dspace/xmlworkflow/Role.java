@@ -21,7 +21,6 @@ import org.dspace.xmlworkflow.storedcomponents.service.CollectionRoleService;
 import org.dspace.xmlworkflow.storedcomponents.service.WorkflowItemRoleService;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * The role that is responsible for a certain step
@@ -43,10 +42,19 @@ public class Role implements BeanNameAware {
     private WorkflowItemRoleService workflowItemRoleService;
 
     private String id;
-    private String name;
+    private final String name;
     private String description;
     private boolean isInternal = false;
     private Scope scope = Scope.COLLECTION;
+
+    /**
+     * Initialize a new role of the given name. The name attribute of a role will be used to lookup the role in DSpace.
+     * @param name name of the role
+     */
+    @Autowired
+    public Role(String name) {
+        this.name = name;
+    }
 
     @Override
     public void setBeanName(String s) {
@@ -115,16 +123,6 @@ public class Role implements BeanNameAware {
 
             return assignees;
         }
-    }
-
-    /**
-     * The name specified in the name attribute of a role will be used to lookup the in DSpace.
-     * The lookup will depend on the scope specified in the "scope" attribute:
-     * @param name
-     */
-    @Required
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**

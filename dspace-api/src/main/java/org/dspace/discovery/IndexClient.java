@@ -157,8 +157,12 @@ public class IndexClient extends DSpaceRunnable {
 
     /**
      * Constructor for this class. This will ensure that the Options are created and set appropriately.
+     * @param name name of script
+     * @param description description of script
      */
-    private IndexClient() {
+    private IndexClient(String name, String description) {
+        // Set name and description in parent
+        super(name, description);
         Options options = IndexClientOptions.constructOptions();
         this.options = options;
     }

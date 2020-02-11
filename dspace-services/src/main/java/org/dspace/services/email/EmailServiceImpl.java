@@ -23,7 +23,6 @@ import org.dspace.services.factory.DSpaceServicesFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Provides mail sending services through JavaMail.  If a {@link javax.mail.Session}
@@ -47,7 +46,6 @@ public class EmailServiceImpl
      * @param cfg the configurationService object
      */
     @Autowired
-    @Required
     public void setCfg(ConfigurationService cfg) {
         this.cfg = cfg;
     }

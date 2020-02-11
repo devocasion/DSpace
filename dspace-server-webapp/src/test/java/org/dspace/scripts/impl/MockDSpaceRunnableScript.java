@@ -13,7 +13,8 @@ import org.dspace.scripts.DSpaceRunnable;
 
 public class MockDSpaceRunnableScript extends DSpaceRunnable {
 
-    private MockDSpaceRunnableScript() {
+    private MockDSpaceRunnableScript(String name, String description) {
+        super(name, description);
         Options options = constructOptions();
         this.options = options;
     }

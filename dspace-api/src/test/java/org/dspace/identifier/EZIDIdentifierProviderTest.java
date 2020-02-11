@@ -11,6 +11,7 @@ package org.dspace.identifier;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,6 +36,7 @@ import org.dspace.content.service.CommunityService;
 import org.dspace.content.service.ItemService;
 import org.dspace.content.service.WorkspaceItemService;
 import org.dspace.identifier.ezid.DateToYear;
+import org.dspace.identifier.ezid.EZIDRequestFactory;
 import org.dspace.identifier.ezid.Transform;
 import org.dspace.services.ConfigurationService;
 import org.dspace.services.factory.DSpaceServicesFactory;
@@ -153,9 +155,9 @@ public class EZIDIdentifierProviderTest
 
         // Don't try to send mail.
         config.setProperty("mail.server.disabled", "true");
-        EZIDIdentifierProvider instance = new EZIDIdentifierProvider();
+        EZIDRequestFactory factory = mock(EZIDRequestFactory.class);
+        EZIDIdentifierProvider instance = new EZIDIdentifierProvider(factory, aCrosswalk);
         instance.setConfigurationService(config);
-        instance.setCrosswalk(aCrosswalk);
         instance.setCrosswalkTransform(crosswalkTransforms);
         instance.setItemService(ContentServiceFactory.getInstance().getItemService());
         DSpaceServicesFactory.getInstance().getServiceManager()

@@ -28,7 +28,6 @@ import org.dspace.identifier.service.DOIService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Provide service for DOIs using DataCite.
@@ -59,7 +58,7 @@ public class DOIIdentifierProvider
      * by the registration agency it has to convert and send metadata of the
      * DSpace items.
      */
-    private DOIConnector connector;
+    private final DOIConnector connector;
 
     static final String CFG_PREFIX = "identifier.doi.prefix";
     static final String CFG_NAMESPACE_SEPARATOR = "identifier.doi.namespaceseparator";
@@ -88,7 +87,13 @@ public class DOIIdentifierProvider
     @Autowired(required = true)
     protected ItemService itemService;
 
-    protected DOIIdentifierProvider() {
+    /**
+     * Initialize the DOI identifier provider with given settings
+     * @param connector the DOIConnector to use
+     */
+    @Autowired
+    protected DOIIdentifierProvider(DOIConnector connector) {
+        this.connector = connector;
     }
 
     /**
@@ -125,11 +130,6 @@ public class DOIIdentifierProvider
             }
         }
         return this.NAMESPACE_SEPARATOR;
-    }
-
-    @Required
-    public void setDOIConnector(DOIConnector connector) {
-        this.connector = connector;
     }
 
     /**
