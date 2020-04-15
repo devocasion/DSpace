@@ -117,10 +117,6 @@ public class CommunityMatcher {
         );
     }
 
-    public static String getFullEmbedsParameters() {
-        return "collections,logo,parentCommunity,subcommunities";
-    }
-
     public static Matcher<? super Object> matchCommunity(Community community) {
         return allOf(hasJsonPath("$.uuid", is(community.getID().toString())),
                 hasJsonPath("$.name", is(community.getName())),

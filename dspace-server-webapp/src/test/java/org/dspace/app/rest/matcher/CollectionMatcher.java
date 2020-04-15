@@ -105,14 +105,6 @@ public class CollectionMatcher {
             );
     }
 
-    /**
-     * Returns a String of embeds that can be used to specify what we to be returned as embeds in the REST call
-     * @return A String containing all different parts we want to have embedded
-     */
-    public static String getEmbedsParameter() {
-        return "license,logo,parentCommunity,mappedItems";
-    }
-
     public static Matcher<? super Object> matchCollection(Collection collection) {
         return allOf(hasJsonPath("$.uuid", is(collection.getID().toString())),
                 hasJsonPath("$.name", is(collection.getName())),
