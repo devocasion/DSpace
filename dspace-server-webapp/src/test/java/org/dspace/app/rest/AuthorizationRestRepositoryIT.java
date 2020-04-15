@@ -55,7 +55,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Test suite for the Authorization endpoint
- * 
+ *
  * @author Andrea Bollini (andrea.bollini at 4science.it)
  *
  */
@@ -78,37 +78,37 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
 
     private SiteService siteService;
 
-    /** 
+    /**
      * this hold a reference to the test feature {@link AlwaysTrueFeature}
      */
     private AuthorizationFeature alwaysTrue;
 
-    /** 
+    /**
      * this hold a reference to the test feature {@link AlwaysFalseFeature}
      */
     private AuthorizationFeature alwaysFalse;
 
-    /** 
+    /**
      * this hold a reference to the test feature {@link AlwaysThrowExceptionFeature}
      */
     private AuthorizationFeature alwaysException;
 
-    /** 
+    /**
      * this hold a reference to the test feature {@link TrueForAdminsFeature}
      */
     private AuthorizationFeature trueForAdmins;
 
-    /** 
+    /**
      * this hold a reference to the test feature {@link TrueForLoggedUsersFeature}
      */
     private AuthorizationFeature trueForLoggedUsers;
 
-    /** 
-     * this hold a reference to the test feature {@link TrueForTestFeature}
+    /**
+     * this hold a reference to the test feature {@link TrueForTestUsersFeature}
      */
     private AuthorizationFeature trueForTestUsers;
 
-    /** 
+    /**
      * this hold a reference to the test feature {@link TrueForUsersInGroupTestFeature}
      */
     private AuthorizationFeature trueForUsersInGroupTest;
@@ -359,7 +359,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
      * - for an administrator that want to inspect permission of the anonymous users or another user
      * - for a logged-in "normal" user
      * - for anonymous
-     * 
+     *
      * @throws Exception
      */
     public void findByObjectTest() throws Exception {
@@ -564,7 +564,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
     /**
      * Verify that the findByObject return an empty page when the requested object doesn't exist but the uri is
      * potentially valid (i.e. deleted object)
-     * 
+     *
      * @throws Exception
      */
     public void findByNotExistingObjectTest() throws Exception {
@@ -631,7 +631,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
     @Test
     /**
      * Verify that the findByObject return the 400 Bad Request response for invalid or missing URI (required parameter)
-     * 
+     *
      * @throws Exception
      */
     public void findByObjectBadRequestTest() throws Exception {
@@ -695,7 +695,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
     @Test
     /**
      * Verify that the findByObject return the 401 Unauthorized response when an eperson is involved
-     * 
+     *
      * @throws Exception
      */
     public void findByObjectUnauthorizedTest() throws Exception {
@@ -722,7 +722,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
     /**
      * Verify that the findByObject return the 403 Forbidden response when a non-admin eperson try to search the
      * authorization of another eperson
-     * 
+     *
      * @throws Exception
      */
     public void findByObjectForbiddenTest() throws Exception {
@@ -795,7 +795,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
      * - for an administrator that want to inspect permission of the anonymous users or another user
      * - for a logged-in "normal" user
      * - for anonymous
-     * 
+     *
      * @throws Exception
      */
     public void findByObjectAndFeatureTest() throws Exception {
@@ -809,8 +809,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
         String adminToken = getAuthToken(admin.getEmail(), password);
         getClient(adminToken).perform(get("/api/authz/authorizations/search/objectAndFeature")
                 .param("uri", comUri)
-                .param("projection", "level")
-                .param("embedLevelDepth", "1")
+                .param("projection", "full")
                 .param("feature", alwaysTrue.getName())
                 .param("eperson", admin.getID().toString()))
             .andExpect(status().isOk())
@@ -823,8 +822,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
         String epersonToken = getAuthToken(eperson.getEmail(), password);
         getClient(epersonToken).perform(get("/api/authz/authorizations/search/objectAndFeature")
                 .param("uri", comUri)
-                .param("projection", "level")
-                .param("embedLevelDepth", "1")
+                .param("projection", "full")
                 .param("feature", alwaysTrue.getName())
                 .param("eperson", eperson.getID().toString()))
             .andExpect(status().isOk())
@@ -836,8 +834,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
         // verify that it works for administators inspecting other users
         getClient(adminToken).perform(get("/api/authz/authorizations/search/objectAndFeature")
                 .param("uri", comUri)
-                .param("projection", "level")
-                .param("embedLevelDepth", "1")
+                .param("projection", "full")
                 .param("feature", alwaysTrue.getName())
                 .param("eperson", eperson.getID().toString()))
             .andExpect(status().isOk())
@@ -849,8 +846,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
         // verify that it works for anonymous users
         getClient().perform(get("/api/authz/authorizations/search/objectAndFeature")
                 .param("uri", comUri)
-                .param("projection", "level")
-                .param("embedLevelDepth", "1")
+                .param("projection", "full")
                 .param("feature", alwaysTrue.getName()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.type", is("authorization")))
@@ -861,8 +857,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
         // verify that it works for administrators inspecting anonymous users
         getClient(adminToken).perform(get("/api/authz/authorizations/search/objectAndFeature")
                 .param("uri", comUri)
-                .param("projection", "level")
-                .param("embedLevelDepth", "1")
+                .param("projection", "full")
                 .param("feature", alwaysTrue.getName()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.type", is("authorization")))
@@ -874,7 +869,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
     @Test
     /**
      * Verify that the search by object and feature works return 204 No Content when a feature is not granted
-     * 
+     *
      * @throws Exception
      */
     public void findByObjectAndFeatureNotGrantedTest() throws Exception {
@@ -922,7 +917,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
     /**
      * Verify that the findByObject return the 204 No Content code when the requested object doesn't exist but the uri
      * is potentially valid (i.e. deleted object) or the feature doesn't exist
-     * 
+     *
      * @throws Exception
      */
     public void findByNotExistingObjectAndFeatureTest() throws Exception {
@@ -1001,7 +996,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
     /**
      * Verify that the findByObject return the 400 Bad Request response for invalid or missing URI or feature (required
      * parameters)
-     * 
+     *
      * @throws Exception
      */
     public void findByObjectAndFeatureBadRequestTest() throws Exception {
@@ -1092,7 +1087,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
     @Test
     /**
      * Verify that the findByObjectAndFeature return the 401 Unauthorized response when an eperson is involved
-     * 
+     *
      * @throws Exception
      */
     public void findByObjectAndFeatureUnauthorizedTest() throws Exception {
@@ -1121,7 +1116,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
     /**
      * Verify that the findByObjectAndFeature return the 403 Forbidden response when a non-admin eperson try to search
      * the authorization of another eperson
-     * 
+     *
      * @throws Exception
      */
     public void findByObjectAndFeatureForbiddenTest() throws Exception {
@@ -1188,7 +1183,7 @@ public class AuthorizationRestRepositoryIT extends AbstractControllerIntegration
      * This test will check that special group are correctly used to verify
      * authorization for the current loggedin user but not inherited from the
      * Administrators login when they look to authorization of third users
-     * 
+     *
      * @throws Exception
      */
     public void verifySpecialGroupMembershipTest() throws Exception {

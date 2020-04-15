@@ -392,7 +392,7 @@ public class BrowsesResourceControllerIT extends AbstractControllerIntegrationTe
     /**
      * This test was introduced to reproduce the bug DS-4269 Pagination links must be consistent also when there is not
      * explicit pagination parameters in the request (i.e. defaults apply)
-     * 
+     *
      * @throws Exception
      */
     public void browsePaginationWithoutExplicitParams() throws Exception {
@@ -420,8 +420,10 @@ public class BrowsesResourceControllerIT extends AbstractControllerIntegrationTe
 
         //** WHEN **
         //An anonymous user browses the items in the Browse by item endpoint
-        getClient().perform(get("/api/discover/browses/title/items"))
-                   //** THEN **
+        getClient().perform(get("/api/discover/browses/title/items")
+                                .param("projection", "full"))
+
+               //** THEN **
                //The status has to be 200 OK
                .andExpect(status().isOk())
                //We expect the content type to be "application/hal+json;charset=UTF-8"
@@ -438,7 +440,9 @@ public class BrowsesResourceControllerIT extends AbstractControllerIntegrationTe
 
         //** WHEN **
         //An anonymous user browses the items in the Browse by item endpoint
-        getClient().perform(get("/api/discover/browses/author/entries"))
+        getClient().perform(get("/api/discover/browses/author/entries")
+                                .param("projection", "full"))
+
                //** THEN **
                //The status has to be 200 OK
                .andExpect(status().isOk())
@@ -777,7 +781,8 @@ public class BrowsesResourceControllerIT extends AbstractControllerIntegrationTe
         //An anonymous user browses the items in the Browse by date issued endpoint
         //with startsWith set to 1990
         getClient().perform(get("/api/discover/browses/dateissued/items?startsWith=1990")
-                                .param("size", "2"))
+                                .param("size", "2")
+                                .param("projection", "full"))
 
                    //** THEN **
                    //The status has to be 200 OK
@@ -803,7 +808,8 @@ public class BrowsesResourceControllerIT extends AbstractControllerIntegrationTe
         //An anonymous user browses the items in the Browse by Title endpoint
         //with startsWith set to T
         getClient().perform(get("/api/discover/browses/title/items?startsWith=T")
-                            .param("size", "2"))
+                            .param("size", "2")
+                            .param("projection", "full"))
 
                    //** THEN **
                    //The status has to be 200 OK
@@ -831,7 +837,8 @@ public class BrowsesResourceControllerIT extends AbstractControllerIntegrationTe
         //with startsWith set to Blade and scope set to Col 1
         getClient().perform(get("/api/discover/browses/title/items?startsWith=Blade")
                                 .param("scope", col1.getID().toString())
-                                .param("size", "2"))
+                                .param("size", "2")
+                                .param("projection", "full"))
 
                    //** THEN **
                    //The status has to be 200 OK
